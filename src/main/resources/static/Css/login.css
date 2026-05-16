@@ -1,0 +1,282 @@
+/* ================================================
+   AFT COMPACT — login.css + register.css paylaşımlı
+   ================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --accent:   #F97316;
+    --accent-h: #EA6C0A;
+    --text-1:   #0F172A;
+    --text-2:   #475569;
+    --text-3:   #94A3B8;
+    --border:   #E2E8F0;
+    --bg:       #F8FAFC;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ─ */
+.auth-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ── Sol panel ─ */
+.auth-left {
+    width: 42%;
+    background: #0F172A;
+    display: flex;
+    align-items: center;
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-left::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -80px;
+    width: 400px; height: 400px;
+    background: rgba(249,115,22,0.06);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.auth-left::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; left: -60px;
+    width: 300px; height: 300px;
+    background: rgba(249,115,22,0.04);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.auth-left-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 56px;
+}
+
+.auth-brand-mark {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700; color: white;
+}
+
+.auth-brand-name {
+    font-size: 17px; color: white;
+}
+
+.auth-brand-name strong { color: var(--accent); }
+
+.auth-tagline h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.25;
+    margin-bottom: 14px;
+}
+
+.auth-tagline p {
+    font-size: 15px;
+    color: #64748B;
+    line-height: 1.65;
+    margin-bottom: 40px;
+}
+
+.auth-features { display: flex; flex-direction: column; gap: 22px; margin-bottom: 56px; }
+
+.feature-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.feature-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.feature-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #E2E8F0;
+    margin-bottom: 3px;
+}
+
+.feature-desc {
+    font-size: 12.5px;
+    color: #64748B;
+    line-height: 1.5;
+}
+
+.auth-footer-text {
+    font-size: 12px;
+    color: #334155;
+}
+
+/* ── Sağ panel ─ */
+.auth-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+    background: white;
+}
+
+.auth-form-wrap {
+    width: 100%;
+    max-width: 380px;
+}
+
+.auth-form-header {
+    margin-bottom: 32px;
+}
+
+.auth-form-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-1);
+    margin-bottom: 4px;
+}
+
+.auth-form-header p {
+    font-size: 14px;
+    color: var(--text-3);
+}
+
+/* ── Form elemanları ─ */
+.form-group { margin-bottom: 18px; }
+
+.form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-2);
+    margin-bottom: 5px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px 13px;
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text-1);
+    background: #FAFBFD;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-input:focus {
+    border-color: var(--accent);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
+}
+
+.form-input::placeholder { color: var(--text-3); }
+
+.input-password { position: relative; }
+
+.input-password .form-input { padding-right: 40px; }
+
+.pw-toggle {
+    position: absolute;
+    right: 10px; top: 50%;
+    transform: translateY(-50%);
+    background: none; border: none;
+    cursor: pointer; padding: 3px;
+    color: var(--text-3);
+    transition: color 0.15s;
+}
+.pw-toggle:hover { color: var(--text-2); }
+
+/* ── Submit butonu ─ */
+.btn-submit {
+    width: 100%;
+    padding: 11px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: background 0.15s, transform 0.1s;
+    margin-top: 6px;
+}
+
+.btn-submit:hover:not(:disabled) { background: var(--accent-h); transform: translateY(-1px); }
+.btn-submit:active { transform: translateY(0); }
+.btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.btn-spinner {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.35);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Bildirim ─ */
+.form-msg {
+    padding: 10px 13px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 500;
+    margin-bottom: 14px;
+}
+.form-msg.success { background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; }
+.form-msg.error   { background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+
+/* ── Alt link ─ */
+.auth-alt {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 13.5px;
+    color: var(--text-3);
+}
+
+.auth-alt a {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 4px;
+}
+
+.auth-alt a:hover { color: var(--accent-h); }
+
+/* ── Responsive ─ */
+@media (max-width: 900px) {
+    .auth-layout { flex-direction: column; }
+    .auth-left { width: 100%; padding: 32px; }
+    .auth-features { display: none; }
+    .auth-tagline h1 { font-size: 24px; }
+    .auth-right { padding: 32px; }
+}

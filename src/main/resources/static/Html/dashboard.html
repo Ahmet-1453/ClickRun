@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click&Run | Ana Sayfa</title>
+    <link rel="stylesheet" href="/Css/aft.css">
+</head>
+<body>
+
+<div id="sidebar-container"></div>
+<div id="navbar-container"></div>
+
+<div class="aft-main">
+    <div class="page-content">
+
+        <!-- BAŞLIK -->
+        <div class="flex-between mb-24 animate-up">
+            <div>
+                <h1 style="font-size:22px;font-weight:700;color:var(--text-1);">Gösterge Paneli</h1>
+                <p style="font-size:13px;color:var(--text-3);margin-top:3px;">
+                    Test senaryolarınızın özet performansı ve son aktiviteleriniz.
+                </p>
+            </div>
+        </div>
+
+        <!-- STAT KARTLARI -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;"
+             class="animate-up stagger-1" id="stat-grid">
+
+            <div class="stat-summary-card" id="sk-s1">
+                <div class="skeleton" style="height:12px;width:55%;margin-bottom:14px;"></div>
+                <div class="skeleton" style="height:32px;width:30%;"></div>
+            </div>
+            <div class="stat-summary-card" id="sk-s2">
+                <div class="skeleton" style="height:12px;width:55%;margin-bottom:14px;"></div>
+                <div class="skeleton" style="height:32px;width:30%;"></div>
+            </div>
+            <div class="stat-summary-card" id="sk-s3">
+                <div class="skeleton" style="height:12px;width:55%;margin-bottom:14px;"></div>
+                <div class="skeleton" style="height:32px;width:30%;"></div>
+            </div>
+
+            <template id="tpl-stat">
+                <div class="stat-summary-card" data-slot="card">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+                        <span data-slot="icon" style="font-size:16px;"></span>
+                        <span data-slot="label"
+                              style="font-size:11px;font-weight:700;letter-spacing:0.6px;
+              text-transform:uppercase;color:var(--text-3);"></span>
+                    </div>
+                    <div style="display:flex;align-items:flex-end;gap:10px;">
+            <span data-slot="value"
+                  style="font-size:38px;font-weight:700;line-height:1;color:var(--text-1);"></span>
+                        <span data-slot="delta"
+                              style="font-size:13px;font-weight:600;margin-bottom:5px;"></span>
+                    </div>
+                </div>
+            </template>
+
+        </div>
+
+        <!-- SON SENARYOLAR TABLOSU -->
+        <div class="card animate-up stagger-2" style="overflow:hidden;">
+
+            <div class="flex-between" style="padding:18px 20px 16px;">
+                <div>
+                    <div style="font-size:15px;font-weight:700;color:var(--text-1);">
+                        En Son Eklenen Senaryolar
+                    </div>
+                    <div style="font-size:12px;color:var(--text-3);margin-top:3px;">
+                        Tasarım ekibinizin son aktiviteleri.
+                    </div>
+                </div>
+                <a href="/Html/scenarios.html"
+                   style="font-size:13px;color:var(--text-2);text-decoration:none;
+          font-weight:500;display:flex;align-items:center;gap:5px;">
+                    Tümünü Gör
+                    <svg width="14" height="14" fill="none" stroke="currentColor"
+                         stroke-width="2" viewBox="0 0 24 24">
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                        <polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                </a>
+            </div>
+
+            <table class="aft-table">
+                <thead>
+                <tr>
+                    <th style="width:70px;">ID</th>
+                    <th>SENARYO ADI</th>
+                    <th style="width:130px;">ADIM SAYISI</th>
+                    <th style="width:160px;">SON GÜNCELLEME</th>
+                    <th style="width:100px;">DURUM</th>
+                </tr>
+                </thead>
+                <tbody id="scenario-tbody">
+                <!-- Skeleton -->
+                <tr id="sk-r1"><td><div class="skeleton" style="height:13px;width:28px;"></div></td><td><div class="skeleton" style="height:14px;width:50%;margin-bottom:5px;"></div><div class="skeleton" style="height:11px;width:30%;"></div></td><td><div class="skeleton" style="height:22px;width:58px;border-radius:20px;"></div></td><td><div class="skeleton" style="height:13px;width:80px;"></div></td><td><div class="skeleton" style="height:22px;width:52px;border-radius:20px;"></div></td></tr>
+                <tr id="sk-r2"><td><div class="skeleton" style="height:13px;width:28px;"></div></td><td><div class="skeleton" style="height:14px;width:40%;margin-bottom:5px;"></div><div class="skeleton" style="height:11px;width:25%;"></div></td><td><div class="skeleton" style="height:22px;width:58px;border-radius:20px;"></div></td><td><div class="skeleton" style="height:13px;width:80px;"></div></td><td><div class="skeleton" style="height:22px;width:52px;border-radius:20px;"></div></td></tr>
+                <tr id="sk-r3"><td><div class="skeleton" style="height:13px;width:28px;"></div></td><td><div class="skeleton" style="height:14px;width:60%;margin-bottom:5px;"></div><div class="skeleton" style="height:11px;width:35%;"></div></td><td><div class="skeleton" style="height:22px;width:58px;border-radius:20px;"></div></td><td><div class="skeleton" style="height:13px;width:80px;"></div></td><td><div class="skeleton" style="height:22px;width:52px;border-radius:20px;"></div></td></tr>
+                </tbody>
+            </table>
+
+            <!-- Template: tablo satırı -->
+            <template id="tpl-row">
+                <tr style="cursor:pointer;" data-slot="row">
+                    <td style="font-family:monospace;font-size:12px;
+            color:var(--text-3);font-weight:600;"
+                        data-slot="id"></td>
+                    <td>
+                        <div style="font-size:14px;font-weight:600;color:var(--text-1);"
+                             data-slot="name"></div>
+                        <div style="font-size:11px;color:var(--text-3);margin-top:2px;"
+                             data-slot="sub"></div>
+                    </td>
+                    <td>
+            <span style="background:var(--accent-soft);color:var(--accent);
+              border-radius:20px;padding:3px 12px;font-size:12px;font-weight:600;"
+                  data-slot="steps"></span>
+                    </td>
+                    <td style="font-size:13px;color:var(--text-2);"
+                        data-slot="date"></td>
+                    <td>
+            <span style="background:#dcfce7;color:#16a34a;border-radius:20px;
+              padding:3px 10px;font-size:12px;font-weight:500;">
+              ● Hazır
+            </span>
+                    </td>
+                </tr>
+            </template>
+
+        </div>
+    </div>
+</div>
+
+<script src="/Js/app.js"></script>
+<script src="/Js/sidebar.js"></script>
+<script src="/Js/navbar.js"></script>
+<script src="/Js/chat.js"></script>
+<script src="/Js/dashboard.js"></script>
+</body>
+</html>

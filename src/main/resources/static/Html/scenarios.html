@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click&Run | Senaryolar</title>
+    <link rel="stylesheet" href="/Css/aft.css">
+</head>
+<body>
+
+<div id="sidebar-container"></div>
+<div id="navbar-container"></div>
+
+<div class="aft-main">
+    <div class="page-content">
+
+        <!-- BAŞLIK -->
+        <div class="flex-between mb-24 animate-up">
+            <div>
+                <h1 style="font-size:22px;font-weight:700;color:var(--text-1);">Senaryolar</h1>
+                <p style="font-size:13px;color:var(--text-3);margin-top:3px;">
+                    Tüm test akışlarınızı yönetin · tek tıkla koşturun
+                    <span id="total-badge"
+                          style="display:inline-block;margin-left:6px;
+            background:var(--surface-2);color:var(--text-2);
+            border-radius:99px;padding:1px 9px;font-size:12px;font-weight:600;">
+            —
+          </span>
+                </p>
+            </div>
+            <button class="btn btn-primary" id="btn-new">
+                <svg width="13" height="13" fill="none" stroke="currentColor"
+                     stroke-width="2" viewBox="0 0 24 24">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Yeni Senaryo
+            </button>
+        </div>
+
+        <!-- FİLTRE ÇUBUĞU -->
+        <div class="card mb-16 animate-up stagger-1"
+             style="padding:12px 16px;">
+            <div class="flex gap-12 flex-wrap">
+
+                <div class="search-input" style="flex:1;min-width:200px;">
+                    <svg width="14" height="14" fill="none" stroke="currentColor"
+                         stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input type="text" id="search-input" placeholder="Senaryo adı ara...">
+                </div>
+
+                <!-- Durum filtresi -->
+                <div id="filter-tabs"
+                     style="background:var(--surface-2);padding:3px;
+          border-radius:var(--radius);display:flex;gap:3px;flex-shrink:0;">
+                    <button class="ftab active" data-filter="all">Tümü</button>
+                    <button class="ftab" data-filter="recent">Son Eklenen</button>
+                </div>
+
+                <!-- Görünüm toggle -->
+                <div class="flex gap-4" style="margin-left:auto;">
+                    <button class="btn btn-ghost btn-sm" id="view-grid" title="Kart görünümü">
+                        <svg width="14" height="14" fill="none" stroke="currentColor"
+                             stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="3" y="3" width="7" height="7"/>
+                            <rect x="14" y="3" width="7" height="7"/>
+                            <rect x="3" y="14" width="7" height="7"/>
+                            <rect x="14" y="14" width="7" height="7"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-ghost btn-sm" id="view-list" title="Liste görünümü">
+                        <svg width="14" height="14" fill="none" stroke="currentColor"
+                             stroke-width="2" viewBox="0 0 24 24">
+                            <line x1="8" y1="6" x2="21" y2="6"/>
+                            <line x1="8" y1="12" x2="21" y2="12"/>
+                            <line x1="8" y1="18" x2="21" y2="18"/>
+                            <line x1="3" y1="6" x2="3.01" y2="6"/>
+                            <line x1="3" y1="12" x2="3.01" y2="12"/>
+                            <line x1="3" y1="18" x2="3.01" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- KART GRID GÖRÜNÜMÜ -->
+        <div id="grid-view" class="animate-up stagger-2">
+
+            <!-- Skeleton grid -->
+            <div id="sk-grid"
+                 style="display:grid;
+        grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;">
+                <div class="card" id="sk-c1" style="overflow:hidden;">
+                    <div class="skeleton" style="height:80px;border-radius:0;"></div>
+                    <div style="padding:14px 16px;">
+                        <div class="skeleton" style="height:14px;width:60%;margin-bottom:10px;"></div>
+                        <div class="skeleton" style="height:20px;width:40%;"></div>
+                    </div>
+                </div>
+                <div class="card" id="sk-c2" style="overflow:hidden;">
+                    <div class="skeleton" style="height:80px;border-radius:0;"></div>
+                    <div style="padding:14px 16px;">
+                        <div class="skeleton" style="height:14px;width:50%;margin-bottom:10px;"></div>
+                        <div class="skeleton" style="height:20px;width:35%;"></div>
+                    </div>
+                </div>
+                <div class="card" id="sk-c3" style="overflow:hidden;">
+                    <div class="skeleton" style="height:80px;border-radius:0;"></div>
+                    <div style="padding:14px 16px;">
+                        <div class="skeleton" style="height:14px;width:70%;margin-bottom:10px;"></div>
+                        <div class="skeleton" style="height:20px;width:45%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gerçek kart grid -->
+            <div id="card-container"
+                 style="display:none;
+        grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;">
+            </div>
+
+            <!-- Boş durum -->
+            <div id="empty-grid" style="display:none;">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🗂️</div>
+                    <div class="empty-state-title">Senaryo bulunamadı</div>
+                    <div class="empty-state-desc">Arama kriterini değiştirin veya yeni senaryo oluşturun.</div>
+                    <button class="btn btn-primary" style="margin-top:16px;" id="empty-new-btn">
+                        Yeni Senaryo Oluştur
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- LİSTE GÖRÜNÜMÜ -->
+        <div id="list-view" style="display:none;" class="card animate-up stagger-2">
+            <table class="aft-table">
+                <thead>
+                <tr>
+                    <th style="width:70px;">ID</th>
+                    <th>SENARYO ADI</th>
+                    <th style="width:110px;">ADIM SAYISI</th>
+                    <th style="width:100px;">DURUM</th>
+                    <th style="width:90px;"></th>
+                </tr>
+                </thead>
+                <tbody id="list-tbody">
+                <!-- JS doldurur -->
+                </tbody>
+            </table>
+            <div id="empty-list" style="display:none;">
+                <div class="empty-state">
+                    <div class="empty-state-icon">🔍</div>
+                    <div class="empty-state-title">Senaryo bulunamadı</div>
+                    <div class="empty-state-desc">Farklı bir arama terimi deneyin.</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ── TEMPLATES ──────────────────────────────────── -->
+
+<!-- Senaryo kartı template -->
+<template id="tpl-card">
+    <div class="card scenario-card"
+         style="overflow:hidden;cursor:pointer;
+    transition:box-shadow var(--transition-md),transform var(--transition-md);">
+
+        <!-- Renk bandı -->
+        <div data-slot="band"
+             style="height:76px;display:flex;align-items:center;
+      justify-content:center;padding:12px 16px;
+      border-bottom:1px solid var(--border);position:relative;">
+
+            <!-- Mini adım önizleme -->
+            <div data-slot="preview"
+                 style="display:flex;align-items:center;gap:5px;opacity:0.75;">
+            </div>
+
+            <!-- ID chip -->
+            <span data-slot="id-chip"
+                  style="position:absolute;top:8px;right:10px;
+        font-size:10px;font-family:monospace;color:var(--text-3);">
+      </span>
+        </div>
+
+        <!-- Kart alt -->
+        <div style="padding:13px 15px;">
+            <div style="display:flex;align-items:center;
+        justify-content:space-between;margin-bottom:8px;">
+
+                <div data-slot="name"
+                     style="font-size:14px;font-weight:600;color:var(--text-1);
+          white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+          max-width:180px;">
+                </div>
+
+                <!-- Aksiyon butonları -->
+                <div style="display:flex;gap:3px;flex-shrink:0;">
+                    <button data-slot="btn-run"
+                            class="btn btn-ghost btn-sm"
+                            style="color:var(--success);" title="Çalıştır">
+                        <svg width="13" height="13" fill="none" stroke="currentColor"
+                             stroke-width="2.5" viewBox="0 0 24 24">
+                            <polygon points="5 3 19 12 5 21 5 3"/>
+                        </svg>
+                    </button>
+                    <button data-slot="btn-del"
+                            class="btn btn-ghost btn-sm"
+                            style="color:var(--danger);" title="Sil">
+                        <svg width="13" height="13" fill="none" stroke="currentColor"
+                             stroke-width="2" viewBox="0 0 24 24">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6l-1 14H6L5 6"/>
+                            <path d="M9 6V4h6v2"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div style="display:flex;gap:6px;">
+        <span data-slot="badge-steps"
+              style="background:var(--accent-soft);color:var(--accent);
+          border-radius:99px;padding:2px 10px;font-size:11.5px;font-weight:600;">
+        </span>
+                <span style="background:var(--success-bg);color:var(--success);
+          border-radius:99px;padding:2px 10px;font-size:11.5px;font-weight:500;">
+          Hazır
+        </span>
+            </div>
+        </div>
+    </div>
+</template>
+
+<!-- Liste satırı template -->
+<template id="tpl-list-row">
+    <tr data-slot="row" style="cursor:pointer;">
+        <td style="font-family:monospace;font-size:12px;
+      color:var(--text-3);font-weight:600;"
+            data-slot="id"></td>
+        <td>
+            <div style="font-size:14px;font-weight:500;color:var(--text-1);"
+                 data-slot="name"></div>
+        </td>
+        <td>
+      <span style="background:var(--accent-soft);color:var(--accent);
+        border-radius:99px;padding:2px 10px;font-size:12px;font-weight:600;"
+            data-slot="steps"></span>
+        </td>
+        <td>
+      <span style="background:var(--success-bg);color:var(--success);
+        border-radius:99px;padding:2px 10px;font-size:12px;font-weight:500;">
+        ● Hazır
+      </span>
+        </td>
+        <td>
+            <div style="display:flex;gap:4px;">
+                <button data-slot="btn-run"
+                        class="btn btn-ghost btn-sm"
+                        style="color:var(--success);" title="Çalıştır">
+                    <svg width="13" height="13" fill="none" stroke="currentColor"
+                         stroke-width="2.5" viewBox="0 0 24 24">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                </button>
+                <button data-slot="btn-del"
+                        class="btn btn-ghost btn-sm"
+                        style="color:var(--danger);" title="Sil">
+                    <svg width="13" height="13" fill="none" stroke="currentColor"
+                         stroke-width="2" viewBox="0 0 24 24">
+                        <polyline points="3 6 5 6 21 6"/>
+                        <path d="M19 6l-1 14H6L5 6"/>
+                        <path d="M9 6V4h6v2"/>
+                    </svg>
+                </button>
+            </div>
+        </td>
+    </tr>
+</template>
+
+<!-- Yeni Senaryo Modal -->
+<div class="modal-overlay" id="new-modal">
+    <div class="modal" style="max-width:440px;">
+        <div class="modal-header">
+            <span class="modal-title">Yeni Senaryo Oluştur</span>
+            <button class="modal-close" id="new-modal-close">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="form-label">
+                    Senaryo Adı <span style="color:var(--danger);">*</span>
+                </label>
+                <input class="form-input" type="text" id="new-name"
+                       placeholder="Örn: Login Akış Testi">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Açıklama (isteğe bağlı)</label>
+                <textarea class="form-textarea" id="new-desc"
+                          placeholder="Bu senaryo ne test ediyor?" rows="3"></textarea>
+            </div>
+            <div id="new-modal-msg" class="form-msg" style="display:none;"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="new-modal-cancel">İptal</button>
+            <button class="btn btn-primary" id="new-modal-create">
+                <svg width="13" height="13" fill="none" stroke="currentColor"
+                     stroke-width="2" viewBox="0 0 24 24">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Oluştur ve Tasarıma Geç
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Silme Onay Modal -->
+<div class="modal-overlay" id="del-modal">
+    <div class="modal" style="max-width:400px;">
+        <div class="modal-header">
+            <span class="modal-title" style="color:var(--danger);">Senaryoyu Sil</span>
+            <button class="modal-close" id="del-modal-close">×</button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size:14px;color:var(--text-2);line-height:1.6;">
+                <strong id="del-name" style="color:var(--text-1);"></strong>
+                senaryosunu silmek istediğinize emin misiniz?
+                Bu işlem geri alınamaz.
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="del-cancel">İptal</button>
+            <button class="btn btn-danger" id="del-confirm">Evet, Sil</button>
+        </div>
+    </div>
+</div>
+
+<!-- Form msg stili -->
+<style>
+    .form-msg {
+        font-size: 12.5px;
+        padding: 8px 12px;
+        border-radius: var(--radius-sm);
+    }
+    .form-msg.error {
+        background: var(--danger-bg);
+        color: var(--danger);
+    }
+    .form-msg.success {
+        background: var(--success-bg);
+        color: var(--success);
+    }
+
+    /* Filter tab stili */
+    .ftab {
+        padding: 5px 13px;
+        border: none;
+        background: transparent;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-2);
+        cursor: pointer;
+        border-radius: calc(var(--radius) - 3px);
+        transition: all var(--transition);
+        font-family: inherit;
+    }
+    .ftab.active {
+        background: var(--surface);
+        color: var(--text-1);
+        box-shadow: var(--shadow-sm);
+    }
+    .ftab:hover:not(.active) { color: var(--text-1); }
+
+    /* Kart hover */
+    .scenario-card:hover {
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-2px);
+    }
+</style>
+
+<script src="/Js/app.js"></script>
+<script src="/Js/sidebar.js"></script>
+<script src="/Js/navbar.js"></script>
+<script src="/Js/chat.js"></script>
+<script src="/Js/scenarios.js"></script>
+</body>
+</html>

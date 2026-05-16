@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click&Run — Giriş</title>
+    <link rel="stylesheet" href="/Css/login.css">
+</head>
+<body>
+
+<div class="auth-layout">
+
+    <!-- Sol panel: Ürün tanıtımı -->
+    <div class="auth-left">
+        <div class="auth-left-inner">
+            <div class="auth-brand">
+                <div class="auth-brand-mark">A</div>
+                <span class="auth-brand-name">Click<strong>&Run</strong></span>
+            </div>
+
+            <div class="auth-tagline">
+                <h1>Kod yazmadan<br>test otomasyonu.</h1>
+                <p>Selenium altyapısı üzerinde çalışan, sürükle-bırak test senaryoları tasarlayın. Kurumsal kalite, sıfır kod.</p>
+            </div>
+
+            <div class="auth-features">
+                <div class="feature-item">
+                    <div class="feature-icon">🎯</div>
+                    <div>
+                        <div class="feature-title">Görsel Senaryo Tasarımı</div>
+                        <div class="feature-desc">N8N benzeri canvas ile test akışlarını görsel olarak oluşturun</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <div>
+                        <div class="feature-title">Gerçek Zamanlı Koşum</div>
+                        <div class="feature-desc">Chrome üzerinde canlı test çalıştırın, anında sonuç alın</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <div>
+                        <div class="feature-title">Detaylı Raporlama</div>
+                        <div class="feature-desc">Koşum geçmişi, başarı oranları ve hata ekran görüntüleri</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-footer-text">
+                Akgün Yazılım · TÜBİTAK 2209-A
+            </div>
+        </div>
+    </div>
+
+    <!-- Sağ panel: Form -->
+    <div class="auth-right">
+        <div class="auth-form-wrap">
+            <div class="auth-form-header">
+                <h2>Tekrar hoş geldiniz</h2>
+                <p>Hesabınıza giriş yapın</p>
+            </div>
+
+            <form id="loginForm" autocomplete="on">
+                <div class="form-group">
+                    <label class="form-label" for="username">Kurumsal E-posta</label>
+                    <input
+                            class="form-input"
+                            type="email"
+                            id="username"
+                            name="email"
+                            placeholder="ornek@akgun.com.tr"
+                            autocomplete="email"
+                            required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">
+                        Şifre
+                    </label>
+                    <div class="input-password">
+                        <input
+                                class="form-input"
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Şifrenizi girin"
+                                autocomplete="current-password"
+                                required
+                        >
+                        <button type="button" class="pw-toggle" id="pw-toggle" tabindex="-1">
+                            <svg id="eye-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="loginMsg" class="form-msg" style="display:none;"></div>
+
+                <button type="submit" class="btn-submit" id="loginBtn">
+                    <span id="loginBtnText">Giriş Yap</span>
+                    <span id="loginBtnLoader" class="btn-spinner" style="display:none;"></span>
+                </button>
+            </form>
+
+            <div class="auth-alt">
+                Hesabınız yok mu?
+                <a href="/Html/register.html">Ücretsiz kayıt olun</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="/Js/login.js"></script>
+<script>
+    document.getElementById('pw-toggle')?.addEventListener('click', function() {
+        const pw = document.getElementById('password');
+        pw.type = pw.type === 'password' ? 'text' : 'password';
+    });
+</script>
+</body>
+</html>

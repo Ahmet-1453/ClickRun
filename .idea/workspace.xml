@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7de1ba8d-d8bd-46c6-bb0f-499e72ed27b9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitattributes" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HELP.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/CompactApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/controller/AuthController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/controller/ChatController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/controller/PageController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/controller/ReportController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/controller/ScenarioController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/controller/ScheduleController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/controller/SelfTestController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/controller/SettingsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/controller/TestRunController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/dto/LoginRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/dto/RegisterRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/dto/UpdatePasswordRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/entity/ChatMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/entity/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/entity/Scenario.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/entity/ScheduleConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/entity/TestRun.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/entity/TestRunDetail.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/entity/TestStep.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/entity/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/repository/ChatMessageRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/repository/ScenarioRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/repository/ScheduleConfigRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/repository/TestRunDetailRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/repository/TestRunRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/repository/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/security/JwtAuthenticationFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/security/JwtTokenProvider.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/security/SecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/AuthService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/DailyReportService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/ReportExportService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/ScheduledTestService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/SelfTestService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/TestRunnerService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/LocatorResolver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/LogStreamHub.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/StepExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/AcceptAlertExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/AssertUrlExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/ClearInputExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/ClickExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/DoubleClickExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/DragAndDropExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/EnterExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/GetAttributeExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/GotoExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/HoverExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/JsClickExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/PressKeyExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/RefreshExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/RightClickExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/ScrollToExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/SelectExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/SwitchToFrameExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/TakeScreenshotExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/TypeExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/VerifyElementExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/VerifyTextExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/WaitExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/WaitForElementDisappearExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/WaitForElementExecutor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/db/V2__lazy_split_and_user_columns.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Css/aft.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Css/login.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Html/dashboard.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Html/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Html/register.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Html/runs.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Html/scenario-builder.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Html/scenarios.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Html/scheduled.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Html/settings.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Js/app.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Js/chat.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Js/dashboard.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Js/login.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Js/navbar.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Js/register.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Js/runs.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Js/scenario.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Js/scenarios.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Js/settings.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/Js/sidebar.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/clickrun/clickrun/ClickRunApplicationTests.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_C:/Users/Ahmet Hasan/Desktop/ClickRun" value="3DlLCUdnFSrVaPczgxfAogMdnWb" />
+    </persistenceIdMap>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3DlLCUdnFSrVaPczgxfAogMdnWb" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Ahmet Hasan/Desktop/ClickRun",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Ahmet Hasan\Desktop\ClickRun\src\main\resources" />
+      <recent name="C:\Users\Ahmet Hasan\Desktop\ClickRun\src\main\resources\db" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="ClickRun" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ClickRunApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="clickrun" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.clickrun.clickrun.ClickRunApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7de1ba8d-d8bd-46c6-bb0f-499e72ed27b9" name="Changes" comment="" />
+      <created>1778851581516</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1778851581516</updated>
+      <workItem from="1778851582809" duration="35000" />
+      <workItem from="1778851682745" duration="220000" />
+      <workItem from="1778852020294" duration="1083000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>
