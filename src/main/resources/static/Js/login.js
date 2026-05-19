@@ -1,11 +1,37 @@
-/* ================================================
-   Click&Run — login.js
-   Backend API: POST /api/auth/login
-   ================================================ */
 (function () {
     'use strict';
 
-    /* ── DOM Elements ────────────────────────────── */
+    function decodeJwtPart(part) {
+        if (!part) return null;
+        let base64 = part.replace(/-/g, '+').replace(/_/g, '/');
+        base64 += '='.repeat((4 - (base64.length % 4)) % 4);
+        try { return JSON.parse(atob(base64)); } catch { return null; }
+    }
+
+    function getValidToken() {
+        const token = localStorage.getItem('jwtToken');
+        if (!token) return null;
+
+        const parts = token.split('.');
+        if (parts.length !== 3) {
+            localStorage.removeItem('jwtToken');
+            return null;
+        }
+
+        const payload = (window.AuthUtils?.decodeJwtPart || decodeJwtPart)(parts[1]);
+        if (!payload) {
+            localStorage.removeItem('jwtToken');
+            return null;
+        }
+
+        if (payload.exp && Date.now() >= payload.exp * 1000) {
+            localStorage.removeItem('jwtToken');
+            return null;
+        }
+
+        return token;
+    }
+
     const form = document.getElementById('login-form');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
@@ -15,26 +41,22 @@
     const btnLoader = document.getElementById('btn-loader');
     const errorMsg = document.getElementById('error-message');
 
-    /* ── Password Toggle ─────────────────────────── */
     toggleBtn?.addEventListener('click', () => {
         const type = passwordInput.type === 'password' ? 'text' : 'password';
         passwordInput.type = type;
     });
 
-    /* ── Form Submit ─────────────────────────────── */
     form?.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const email = emailInput.value.trim();
         const password = passwordInput.value;
 
-        // Validation
         if (!email || !password) {
             showError('Lütfen tüm alanları doldurun.');
             return;
         }
 
-        // Loading state
         setLoading(true);
         hideError();
 
@@ -45,10 +67,8 @@
                 body: JSON.stringify({ email, password })
             });
 
-            const data = await response.json();
-
             if (!response.ok) {
-                // Backend error mesajları
+                const data = await response.json().catch(() => ({}));
                 if (response.status === 429) {
                     throw new Error(data.message || 'Çok fazla deneme. Lütfen bekleyin.');
                 }
@@ -58,11 +78,15 @@
                 throw new Error(data.message || 'Giriş başarısız.');
             }
 
-            // Token kaydet
+            const data = await response.json().catch(() => ({}));
+
+            if (!data.token || typeof data.token !== 'string') {
+                throw new Error('Geçersiz token alındı. Lütfen tekrar deneyin.');
+            }
+
             localStorage.setItem('jwtToken', data.token);
 
-            // Success → Dashboard
-            window.location.href = '/Html/dashboard.html';
+            window.location.replace('/Html/dashboard.html');
 
         } catch (err) {
             showError(err.message);
@@ -70,7 +94,6 @@
         }
     });
 
-    /* ── Helpers ─────────────────────────────────── */
     function setLoading(loading) {
         submitBtn.disabled = loading;
         btnText.style.display = loading ? 'none' : '';
@@ -86,9 +109,7 @@
         errorMsg.style.display = 'none';
     }
 
-    /* ── Auto-redirect if logged in ──────────────── */
-    if (localStorage.getItem('jwtToken')) {
+    if (getValidToken()) {
         window.location.replace('/Html/dashboard.html');
     }
-
 })();

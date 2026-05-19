@@ -5,68 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7de1ba8d-d8bd-46c6-bb0f-499e72ed27b9" name="Changes" comment="Commit 2 builder - chat - scheduled">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/controller/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/controller/ChatController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/controller/ReportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/controller/ReportController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/controller/ScenarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/controller/ScenarioController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/controller/ScheduleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/controller/ScheduleController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/controller/SelfTestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/controller/SelfTestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/controller/SettingsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/controller/SettingsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/controller/TestRunController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/controller/TestRunController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/repository/ChatMessageRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/repository/ChatMessageRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/repository/ScenarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/repository/ScenarioRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/repository/ScheduleConfigRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/repository/ScheduleConfigRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/repository/TestRunDetailRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/repository/TestRunDetailRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/repository/TestRunRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/repository/TestRunRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/DailyReportService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/DailyReportService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/ReportExportService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/ReportExportService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/ScheduledTestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/ScheduledTestService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/TestRunnerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/TestRunnerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/StepExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/StepExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/AcceptAlertExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/AcceptAlertExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/AssertUrlExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/AssertUrlExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/ClearInputExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/ClearInputExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/ClickExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/ClickExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/DoubleClickExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/DoubleClickExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/DragAndDropExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/DragAndDropExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/EnterExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/EnterExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/GetAttributeExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/GetAttributeExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/GotoExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/GotoExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/HoverExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/HoverExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/JsClickExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/JsClickExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/PressKeyExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/PressKeyExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/RefreshExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/RefreshExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/RightClickExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/RightClickExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/ScrollToExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/ScrollToExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/SelectExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/SelectExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/SwitchToFrameExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/SwitchToFrameExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/TakeScreenshotExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/TakeScreenshotExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/TypeExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/TypeExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/VerifyElementExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/VerifyElementExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/VerifyTextExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/VerifyTextExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/WaitExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/WaitExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/WaitForElementDisappearExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/WaitForElementDisappearExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/WaitForElementExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/service/runner/impl/WaitForElementExecutor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/Css/aft.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Css/aft.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/Css/login.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Css/login.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/Html/builder.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Html/builder.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/Html/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Html/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/Html/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Html/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/Html/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Html/register.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/Html/runs.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Html/runs.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/Html/scenarios.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Html/scenarios.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/Html/scheduled.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Html/scheduled.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/Html/settings.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Html/settings.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/security/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/security/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/security/JwtTokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/security/JwtTokenProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/Js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/Js/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Js/chat.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/Js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Js/dashboard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/Js/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Js/login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/Js/navbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Js/navbar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/Js/register.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Js/register.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/Js/scenario.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Js/theme.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/Js/scheduled.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Js/scheduled.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/Js/settings.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Js/settings.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/Js/sidebar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/Js/sidebar.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,10 +30,13 @@
       <entry key="_C:/Users/Ahmet Hasan/Desktop/ClickRun" value="3DlLCUdnFSrVaPczgxfAogMdnWb" />
     </persistenceIdMap>
   </component>
+  <component name="CopilotUserSelectedChatMode">
+    <option name="chatModeId" value="Agent" />
+  </component>
   <component name="CopilotUserSelectedModel">
     <selectedModels>
-      <entry key="agent-panel" value="GPT-5.2-Codex" />
-      <entry key="chat-panel" value="GPT-5.2-Codex" />
+      <entry key="agent-panel" value="GPT-5.4 mini" />
+      <entry key="chat-panel" value="GPT-5.4 mini" />
     </selectedModels>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -122,32 +77,32 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Spring Boot.ClickRunApplication.executor": "Run",
-    "Spring Boot.CompactApplication.executor": "Run",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Ahmet Hasan/Desktop/ClickRun",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.ClickRunApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.CompactApplication.executor&quot;: &quot;Run&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Ahmet Hasan/Desktop/ClickRun&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Ahmet Hasan\Desktop\ClickRun\src\main\resources" />
@@ -193,7 +148,9 @@
       <workItem from="1779026546620" duration="729000" />
       <workItem from="1779120907199" duration="15483000" />
       <workItem from="1779137545365" duration="7323000" />
-      <workItem from="1779180129929" duration="25483000" />
+      <workItem from="1779180129929" duration="28748000" />
+      <workItem from="1779224428919" duration="3035000" />
+      <workItem from="1779227492176" duration="1340000" />
     </task>
     <servers />
   </component>

@@ -1,22 +1,36 @@
-/* ================================================
-   AFT COMPACT — navbar.js  v2.0
-   ================================================ */
 (function () {
 
     /* Token'dan bilgi */
     let userEmail = '', userRole = 'USER', userName = '';
-    try {
-        const t = localStorage.getItem('jwtToken');
-        if (t) {
-            const p = JSON.parse(decodeURIComponent(
-                atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))
-                    .split('').map(c => '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')
-            ));
-            userEmail = p.sub || '';
-            userRole  = p.role || 'USER';
-            userName  = userEmail.split('@')[0];
+
+    function decodeJwtPart(part) {
+        if (!part) return null;
+        let base64 = part.replace(/-/g, '+').replace(/_/g, '/');
+        base64 += '='.repeat((4 - (base64.length % 4)) % 4);
+        try { return JSON.parse(atob(base64)); } catch { return null; }
+    }
+
+    function parseJWT(token) {
+        const payload = (window.AuthUtils?.decodeJwtPart || decodeJwtPart)(token?.split?.('.')[1]);
+        if (!payload) {
+            console.error('JWT parse error');
         }
-    } catch(e) {}
+        return payload;
+    }
+
+    try {
+        const t = window.AuthUtils?.getValidToken?.() || localStorage.getItem('jwtToken');
+        if (t) {
+            const p = parseJWT(t);
+            if (p) {
+                userEmail = p.sub || p.email || '';
+                userRole  = p.role || 'USER';
+                userName  = userEmail.split('@')[0];
+            }
+        }
+    } catch(e) {
+        console.error('Token processing error:', e);
+    }
 
     /* Breadcrumb */
     const path  = window.location.pathname.toLowerCase();
@@ -45,7 +59,6 @@
             : `<span>${p}</span><span class="sep">/</span>`
     ).join('');
 
-    /* Initials */
     const initials = userName.charAt(0).toUpperCase() || '?';
 
     const navbarHTML = `
@@ -72,99 +85,36 @@
       </div>
     </header>
 
-    <!-- Kullanıcı dropdown (tıklayınca açılır) -->
-    <div id="user-dropdown" style="
-      display:none; position:fixed;
-      background:var(--surface);
-      border:1px solid var(--border);
-      border-radius:var(--radius-lg);
-      box-shadow:var(--shadow-lg);
-      width:200px; z-index:200;
-      padding:6px;
-      animation: modalIn 0.15s ease;
-    ">
-      <div style="padding:10px 12px 8px; border-bottom:1px solid var(--border); margin-bottom:4px;">
-        <div style="font-size:12.5px;font-weight:600;color:var(--text-1);">${userEmail}</div>
-        <div style="font-size:11px;color:var(--text-3);">${userRole}</div>
-      </div>
-      <a href="/Html/settings.html" style="
-        display:flex; align-items:center; gap:8px;
-        padding:8px 10px; border-radius:var(--radius-sm);
-        color:var(--text-2); font-size:13px;
-        text-decoration:none; transition:background var(--transition);
-      " onmouseover="this.style.background='var(--surface-2)'" onmouseout="this.style.background=''">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    <div id="user-dropdown" style="display:none; position:fixed; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); z-index:1000;">
+      <a href="/Html/settings.html" style="display:block; padding:10px 16px; color:var(--text); text-decoration:none; border-bottom:1px solid var(--border);">
+        <svg style="width:16px; height:16px; margin-right:8px; vertical-align:middle;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m5.08-5.08l4.24-4.24"/></svg>
         Ayarlar
       </a>
-      <button id="navbar-logout" style="
-        display:flex; align-items:center; gap:8px;
-        width:100%; padding:8px 10px;
-        border:none; background:none; cursor:pointer;
-        border-radius:var(--radius-sm);
-        color:var(--danger); font-size:13px;
-        font-family:inherit; transition:background var(--transition);
-        text-align:left;
-      " onmouseover="this.style.background='var(--danger-bg)'" onmouseout="this.style.background=''">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      <button id="logout-btn" style="width:100%; padding:10px 16px; text-align:left; background:none; border:none; color:var(--text); cursor:pointer;">
+        <svg style="width:16px; height:16px; margin-right:8px; vertical-align:middle;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 3l4 4m0 0l-4 4m4-4H9"/></svg>
         Çıkış Yap
       </button>
     </div>
-  `;
-
-    const container = document.getElementById('navbar-container');
-    if (container) container.outerHTML = navbarHTML;
-    else document.body.insertAdjacentHTML('afterbegin', navbarHTML);
-
-    /* Dropdown */
-    document.addEventListener('click', e => {
-        const userBtn = document.getElementById('navbar-user');
-        const dropdown = document.getElementById('user-dropdown');
-        if (!userBtn || !dropdown) return;
-
-        if (e.target.closest('#navbar-user')) {
-            const rect = userBtn.getBoundingClientRect();
-            dropdown.style.top  = (rect.bottom + 6) + 'px';
-            dropdown.style.right = (window.innerWidth - rect.right) + 'px';
-            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-            return;
-        }
-        if (!e.target.closest('#user-dropdown')) {
-            dropdown.style.display = 'none';
-        }
-    });
-
-    /* Çıkış */
-    document.addEventListener('click', e => {
-        if (e.target.closest('#navbar-logout')) {
-            localStorage.removeItem('jwtToken');
-            window.location.replace('/Html/login.html');
-        }
-    });
-
-    /* Global toast fonksiyonu */
-    window.showToast = function(message, type = 'info', duration = 3500) {
-        const container = document.getElementById('toast-container');
-        if (!container) return;
-
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.innerHTML = `
-      <span style="font-size:15px;">${
-            type === 'success' ? '✓' :
-                type === 'error'   ? '✕' :
-                    type === 'warning' ? '⚠' : 'ℹ'
-        }</span>
-      <span>${message}</span>
     `;
-        container.appendChild(toast);
 
-        setTimeout(() => {
-            toast.classList.add('hiding');
-            setTimeout(() => toast.remove(), 250);
-        }, duration);
-    };
+    document.body.insertAdjacentHTML('afterbegin', navbarHTML);
 
-    /* Eski isimle uyumluluk */
-    window.showModernToast = window.showToast;
+    const navbar = document.getElementById('navbar-user');
+    const dropdown = document.getElementById('user-dropdown');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    navbar?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+    });
+
+    document.addEventListener('click', () => {
+        dropdown.style.display = 'none';
+    });
+
+    logoutBtn?.addEventListener('click', () => {
+        localStorage.removeItem('jwtToken');
+        window.location.replace('/Html/login.html');
+    });
 
 })();

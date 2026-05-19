@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    const token = localStorage.getItem('jwtToken');
+    const token = window.AuthUtils?.getValidToken?.() || localStorage.getItem('jwtToken');
     if (!token) {
         window.location.replace('/Html/login.html');
         return;
@@ -28,12 +28,13 @@
             },
         }).then(r => {
             if (r.status === 401 || r.status === 403) {
-                localStorage.removeItem('jwtToken');
-                window.location.replace('/Html/login.html');
+                window.AuthUtils?.handleAuthFailure?.();
                 throw new Error('Unauthorized');
             }
             if (!r.ok) throw new Error(r.statusText);
-            return r.json();
+            if (r.status === 204) return {};
+            const contentType = r.headers.get('content-type') || '';
+            return contentType.includes('application/json') ? r.json() : r.text();
         });
     }
 

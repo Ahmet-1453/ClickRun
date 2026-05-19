@@ -1,11 +1,37 @@
-/* ================================================
-   Click&Run — register.js
-   Backend API: POST /api/auth/register
-   ================================================ */
 (function () {
     'use strict';
 
-    /* ── DOM Elements ────────────────────────────── */
+    function decodeJwtPart(part) {
+        if (!part) return null;
+        let base64 = part.replace(/-/g, '+').replace(/_/g, '/');
+        base64 += '='.repeat((4 - (base64.length % 4)) % 4);
+        try { return JSON.parse(atob(base64)); } catch { return null; }
+    }
+
+    function getValidToken() {
+        const token = localStorage.getItem('jwtToken');
+        if (!token) return null;
+
+        const parts = token.split('.');
+        if (parts.length !== 3) {
+            localStorage.removeItem('jwtToken');
+            return null;
+        }
+
+        const payload = (window.AuthUtils?.decodeJwtPart || decodeJwtPart)(parts[1]);
+        if (!payload) {
+            localStorage.removeItem('jwtToken');
+            return null;
+        }
+
+        if (payload.exp && Date.now() >= payload.exp * 1000) {
+            localStorage.removeItem('jwtToken');
+            return null;
+        }
+
+        return token;
+    }
+
     const form = document.getElementById('register-form');
     const usernameInput = document.getElementById('username');
     const emailInput = document.getElementById('email');
@@ -17,13 +43,11 @@
     const errorMsg = document.getElementById('error-message');
     const successMsg = document.getElementById('success-message');
 
-    /* ── Password Toggle ─────────────────────────── */
     toggleBtn?.addEventListener('click', () => {
         const type = passwordInput.type === 'password' ? 'text' : 'password';
         passwordInput.type = type;
     });
 
-    /* ── Form Submit ─────────────────────────────── */
     form?.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -31,7 +55,6 @@
         const email = emailInput.value.trim();
         const password = passwordInput.value;
 
-        // Validation
         if (!username || !email || !password) {
             showError('Lütfen tüm alanları doldurun.');
             return;
@@ -52,7 +75,6 @@
             return;
         }
 
-        // Loading state
         setLoading(true);
         hideMessages();
 
@@ -63,23 +85,24 @@
                 body: JSON.stringify({ username, email, password })
             });
 
-            const data = await response.json();
-
             if (!response.ok) {
-                // Backend error
                 if (response.status === 409) {
                     throw new Error('Bu e-posta adresi zaten kayıtlı.');
                 }
+                const data = await response.json().catch(() => ({}));
                 throw new Error(data.message || 'Kayıt başarısız.');
             }
 
-            // Success
-            showSuccess('Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz...');
+            const contentType = response.headers.get('content-type') || '';
+            if (contentType.includes('application/json')) {
+                await response.json().catch(() => ({}));
+            } else {
+                await response.text().catch(() => '');
+            }
 
-            // Clear form
+            showSuccess('Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz...');
             form.reset();
 
-            // Redirect after 2 seconds
             setTimeout(() => {
                 window.location.href = '/Html/login.html';
             }, 2000);
@@ -90,7 +113,6 @@
         }
     });
 
-    /* ── Helpers ─────────────────────────────────── */
     function setLoading(loading) {
         submitBtn.disabled = loading;
         btnText.style.display = loading ? 'none' : '';
@@ -116,9 +138,7 @@
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
-    /* ── Auto-redirect if logged in ──────────────── */
-    if (localStorage.getItem('jwtToken')) {
+    if (getValidToken()) {
         window.location.replace('/Html/dashboard.html');
     }
-
 })();

@@ -5,7 +5,7 @@
 (function () {
     'use strict';
 
-    const token = localStorage.getItem('jwtToken');
+    const token = window.AuthUtils?.getValidToken?.() || localStorage.getItem('jwtToken');
     if (!token) { window.location.replace('/Html/login.html'); return; }
 
     /* ── API ─────────────────────────────────────── */
@@ -14,8 +14,7 @@
             headers: { Authorization: `Bearer ${token}` }
         }).then(r => {
             if (r.status === 401 || r.status === 403) {
-                localStorage.removeItem('jwtToken');
-                window.location.replace('/Html/login.html');
+                window.AuthUtils?.handleAuthFailure?.();
                 throw new Error('Unauthorized');
             }
             return r.json().catch(() => ({}));

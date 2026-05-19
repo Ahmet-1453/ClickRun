@@ -26,6 +26,54 @@
         }, 200);
     }
 
+    function decodeJwtPart(part) {
+        if (!part) return null;
+        let base64 = part.replace(/-/g, '+').replace(/_/g, '/');
+        base64 += '='.repeat((4 - (base64.length % 4)) % 4);
+        try {
+            return JSON.parse(atob(base64));
+        } catch {
+            return null;
+        }
+    }
+
+    function getValidToken() {
+        const token = localStorage.getItem('jwtToken');
+        if (!token) return null;
+
+        const parts = token.split('.');
+        if (parts.length !== 3) {
+            localStorage.removeItem('jwtToken');
+            return null;
+        }
+
+        const payload = decodeJwtPart(parts[1]);
+        if (!payload) {
+            localStorage.removeItem('jwtToken');
+            return null;
+        }
+
+        if (payload.exp && Date.now() >= payload.exp * 1000) {
+            localStorage.removeItem('jwtToken');
+            return null;
+        }
+
+        return token;
+    }
+
+    function handleAuthFailure() {
+        localStorage.removeItem('jwtToken');
+        window.location.replace('/Html/login.html');
+    }
+
+    window.AuthUtils = {
+        decodeJwtPart,
+        getValidToken,
+        handleAuthFailure
+    };
+    void window.AuthUtils.getValidToken;
+    void window.AuthUtils.handleAuthFailure;
+
     function animateContent() {
         const main = document.querySelector('.aft-main');
         if (main) {
@@ -72,9 +120,12 @@
     function checkAuth() {
         const path = window.location.pathname.toLowerCase();
         const isPublic = ['login', 'register'].some(p => path.includes(p));
-        if (!isPublic && !localStorage.getItem('jwtToken')) {
-            window.location.replace('/Html/login.html');
-            return false;
+        if (!isPublic) {
+            const token = getValidToken();
+            if (!token) {
+                handleAuthFailure();
+                return false;
+            }
         }
         return true;
     }

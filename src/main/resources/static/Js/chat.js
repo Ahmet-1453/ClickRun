@@ -15,7 +15,7 @@
 (function () {
     'use strict';
 
-    const token = localStorage.getItem('jwtToken');
+    const token = window.AuthUtils?.getValidToken?.() || localStorage.getItem('jwtToken');
     if (!token) return;
 
     /* ── State ───────────────────────────────────── */
@@ -37,7 +37,8 @@
     function parseJWT(tkn) {
         try {
             const base64 = tkn.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-            return JSON.parse(atob(base64));
+            const padded = base64 + '='.repeat((4 - (base64.length % 4)) % 4);
+            return JSON.parse(atob(padded));
         } catch { return {}; }
     }
 
@@ -646,13 +647,13 @@
                 'Content-Type': 'application/json',
                 ...(opts.headers || {}),
             },
-        }).then(r => {
-            if (r.status === 401 || r.status === 403) {
-                localStorage.removeItem('jwtToken');
-                window.location.replace('/Html/login.html');
-                throw new Error('Unauthorized');
+        }).then(async r => {
+            if (!r.ok) {
+                const err = await r.json().catch(() => ({}));
+                throw new Error(err.message || err.error || r.statusText || 'Request failed');
             }
-            return r.json();
+            const contentType = r.headers.get('content-type') || '';
+            return contentType.includes('application/json') ? r.json() : r.text();
         });
     }
 
@@ -877,7 +878,7 @@
 
             // Remove from local state
             Object.keys(messages).forEach(key => {
-                messages[key] = messages[key].filter(m => m.id != id);
+                messages[key] = messages[key].filter(m => m.id !== id);
             });
 
             renderMessages();

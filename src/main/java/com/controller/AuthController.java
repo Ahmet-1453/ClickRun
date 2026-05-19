@@ -7,6 +7,7 @@ import com.entity.User;
 import com.repository.UserRepository;
 import com.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.http.HttpStatus;
 
 import java.util.Map;
 
@@ -28,15 +28,13 @@ public class AuthController {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(
-            @RequestBody LoginRequest request) {
+    public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request) {
         String token = authService.login(request);
         return ResponseEntity.ok(Map.of("token", token));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> register(
-            @RequestBody RegisterRequest request) {
+    public ResponseEntity<Map<String, String>> register(@RequestBody RegisterRequest request) {
         authService.register(request);
         return ResponseEntity.ok(Map.of("message", "Kayıt başarılı."));
     }
@@ -63,9 +61,7 @@ public class AuthController {
                     "Geçersiz rol: " + newRoleStr);
         }
 
-        // ADMIN kendini düşüremesin
-        if (targetEmail.equals(adminDetails.getUsername())
-                && newRole == Role.VIEWER) {
+        if (targetEmail.equals(adminDetails.getUsername()) && newRole == Role.VIEWER) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     "Kendinizi VIEWER yapanazsınız.");
         }
@@ -84,7 +80,7 @@ public class AuthController {
         ));
     }
 
-    @PatchMapping("/auth/change-password")
+    @PatchMapping("/change-password")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Map<String, String>> changePassword(
             @RequestBody Map<String, String> body,
@@ -93,20 +89,22 @@ public class AuthController {
         String current = body.get("currentPassword");
         String newPass = body.get("newPassword");
 
-        User user = userRepository.findByEmail(userDetails.getUsername())
-                .orElseThrow();
-
-        // Mevcut şifreyi kontrol et
-        if (!passwordEncoder.matches(current, user.getPassword())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("error", "Mevcut şifre yanlış"));
+        if (current == null || newPass == null || newPass.length() < 6) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Mevcut ve yeni şifre zorunludur; yeni şifre en az 6 karakter olmalıdır.");
         }
 
-        // Yeni şifreyi kaydet
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Kullanıcı bulunamadı."));
+
+        if (!passwordEncoder.matches(current, user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Mevcut şifre yanlış.");
+        }
+
         user.setPassword(passwordEncoder.encode(newPass));
         userRepository.save(user);
 
         return ResponseEntity.ok(Map.of("message", "Şifre güncellendi"));
     }
-
 }

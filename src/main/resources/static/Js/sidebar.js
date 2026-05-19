@@ -5,13 +5,18 @@
 
     /* Token'dan kullanıcı bilgilerini al */
     let userEmail = '', userRole = 'USER', userName = '';
+
+    function decodeJwtPart(part) {
+        if (!part) return null;
+        let base64 = part.replace(/-/g,'+').replace(/_/g,'/');
+        base64 += '='.repeat((4 - (base64.length % 4)) % 4);
+        try { return JSON.parse(atob(base64)); } catch { return null; }
+    }
+
     try {
-        const t = localStorage.getItem('jwtToken');
+        const t = window.AuthUtils?.getValidToken?.() || localStorage.getItem('jwtToken');
         if (t) {
-            const p = JSON.parse(decodeURIComponent(
-                atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))
-                    .split('').map(c => '%' + ('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')
-            ));
+            const p = (window.AuthUtils?.decodeJwtPart || decodeJwtPart)(t.split('.')[1]);
             userEmail = p.sub || '';
             userRole  = p.role || 'USER';
             userName  = userEmail.split('@')[0];

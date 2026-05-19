@@ -1,29 +1,28 @@
-/* ================================================
-   Click&Run — settings.js
-   Profil + Güvenlik + Tema + Kullanıcı Yönetimi
-   ================================================ */
 (function () {
     'use strict';
 
-    const token = localStorage.getItem('jwtToken');
+    function decodeJwtPart(part) {
+        if (!part) return null;
+        let base64 = part.replace(/-/g, '+').replace(/_/g, '/');
+        base64 += '='.repeat((4 - (base64.length % 4)) % 4);
+        try { return JSON.parse(atob(base64)); } catch { return null; }
+    }
+
+    const token = window.AuthUtils?.getValidToken?.() || localStorage.getItem('jwtToken');
     if (!token) {
         window.location.replace('/Html/login.html');
         return;
     }
 
-    /* ── State ───────────────────────────────────── */
     let currentUser = null;
     let users = [];
 
-    /* ── JWT Parse ───────────────────────────────── */
     function parseJWT(t) {
         try {
-            const base64 = t.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-            return JSON.parse(atob(base64));
+            return (window.AuthUtils?.decodeJwtPart || decodeJwtPart)(t.split('.')[1]);
         } catch { return {}; }
     }
 
-    /* ── API ─────────────────────────────────────── */
     function api(path, opts = {}) {
         return fetch(path, {
             ...opts,
@@ -32,18 +31,19 @@
                 'Content-Type': 'application/json',
                 ...(opts.headers || {}),
             },
-        }).then(r => {
+        }).then(async r => {
             if (r.status === 401 || r.status === 403) {
-                localStorage.removeItem('jwtToken');
-                window.location.replace('/Html/login.html');
+                window.AuthUtils?.handleAuthFailure?.();
                 throw new Error('Unauthorized');
             }
-            if (!r.ok) throw new Error(r.statusText);
-            return r.json();
+            if (!r.ok) {
+                const err = await r.json().catch(() => ({}));
+                throw new Error(err.message || err.error || r.statusText);
+            }
+            return r.status === 204 ? {} : r.json().catch(() => ({}));
         });
     }
 
-    /* ── Load Profile ────────────────────────────── */
     async function loadProfile() {
         try {
             const payload = parseJWT(token);
@@ -54,7 +54,6 @@
 
             currentUser = { email, role, name };
 
-            // Profile card
             document.getElementById('profile-avatar').textContent = initial;
             document.getElementById('profile-name').textContent = name;
             document.getElementById('profile-email').textContent = email;
@@ -63,11 +62,9 @@
             roleEl.textContent = role;
             roleEl.className = `profile-role role-${role.toLowerCase()}`;
 
-            // Form inputs
             document.getElementById('input-email').value = email;
             document.getElementById('input-role').value = role;
 
-            // Show admin section
             if (role === 'ADMIN') {
                 document.getElementById('admin-section-label').style.display = '';
                 document.getElementById('users-tab').style.display = '';
@@ -78,25 +75,20 @@
         }
     }
 
-    /* ── Tab Switching ───────────────────────────── */
     function switchTab(tabName) {
-        // Update tabs
         document.querySelectorAll('.settings-tab').forEach(t => {
             t.classList.toggle('active', t.dataset.tab === tabName);
         });
 
-        // Update panels
         document.querySelectorAll('.settings-panel').forEach(p => {
             p.classList.toggle('active', p.id === `panel-${tabName}`);
         });
 
-        // Load users if switching to users tab
         if (tabName === 'users' && users.length === 0) {
             loadUsers();
         }
     }
 
-    /* ── Password Strength ───────────────────────── */
     function checkPasswordStrength(pass) {
         const bar = document.getElementById('pass-strength-bar');
         const hint = document.getElementById('pass-hint');
@@ -133,7 +125,6 @@
         }
     }
 
-    /* ── Update Password ─────────────────────────── */
     async function updatePassword() {
         const current = document.getElementById('input-current-pass').value;
         const newPass = document.getElementById('input-new-pass').value;
@@ -141,7 +132,6 @@
 
         hideError();
 
-        // Validation
         if (!current || !newPass || !confirm) {
             showError('Tüm alanları doldurun.');
             return;
@@ -158,13 +148,13 @@
         }
 
         try {
-            // Backend'de şifre değiştirme endpoint'i yoksa eklenecek
-            // Şimdilik mock response
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await api('/api/auth/change-password', {
+                method: 'PATCH',
+                body: JSON.stringify({ currentPassword: current, newPassword: newPass }),
+            });
 
             showToast('Şifre güncellendi.', 'success');
 
-            // Clear form
             document.getElementById('input-current-pass').value = '';
             document.getElementById('input-new-pass').value = '';
             document.getElementById('input-confirm-pass').value = '';
@@ -175,7 +165,6 @@
         }
     }
 
-    /* ── Load Users ──────────────────────────────── */
     async function loadUsers() {
         try {
             const data = await api('/api/settings/users');
@@ -186,7 +175,6 @@
         }
     }
 
-    /* ── Render Users ────────────────────────────── */
     function renderUsers() {
         const container = document.getElementById('users-list');
         container.innerHTML = '';
@@ -215,12 +203,10 @@
             const select = clone.querySelector('[data-slot="role-select"]');
             select.value = user.role;
 
-            // Kendi rolünü değiştiremesin
             if (user.email === currentUser.email) {
                 select.disabled = true;
             }
 
-            // Change listener
             select.addEventListener('change', async (e) => {
                 const newRole = e.target.value;
 
@@ -247,7 +233,6 @@
         });
     }
 
-    /* ── Helpers ─────────────────────────────────── */
     function showError(msg) {
         const el = document.getElementById('security-error');
         el.textContent = msg;
@@ -262,22 +247,17 @@
         if (window.showToast) window.showToast(msg, type);
     }
 
-    /* ── Event Listeners ─────────────────────────── */
     function attachEvents() {
-        // Tab switching
         document.querySelectorAll('.settings-tab').forEach(tab => {
             tab.addEventListener('click', () => switchTab(tab.dataset.tab));
         });
 
-        // Password strength
         document.getElementById('input-new-pass')?.addEventListener('input', e => {
             checkPasswordStrength(e.target.value);
         });
 
-        // Update password
         document.getElementById('btn-update-password')?.addEventListener('click', updatePassword);
 
-        // Theme change (YENİ)
         document.querySelectorAll('input[name="theme"]').forEach(radio => {
             radio.addEventListener('change', e => {
                 if (window.ThemeManager) {
@@ -288,10 +268,8 @@
         });
     }
 
-    /* ── Init ────────────────────────────────────── */
     document.addEventListener('DOMContentLoaded', () => {
         loadProfile();
         attachEvents();
     });
-
 })();
