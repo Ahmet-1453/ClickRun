@@ -1,7 +1,7 @@
 package com.service.runner.impl;
 
-import com.aft.compact.entity.TestStep;
-import com.aft.compact.service.runner.StepExecutor;
+import com.entity.TestStep;
+import com.service.runner.StepExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;

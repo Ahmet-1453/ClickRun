@@ -1,7 +1,7 @@
 package com.service;
 
-import com.aft.compact.entity.TestRun;
-import com.aft.compact.repository.TestRunRepository;
+import com.entity.TestRun;
+import com.repository.TestRunRepository;
 import com.lowagie.text.Document;
 import com.lowagie.text.Element;
 import com.lowagie.text.Font;

@@ -1,8 +1,8 @@
 package com.controller;
 
-import com.aft.compact.entity.Role;
-import com.aft.compact.entity.User;
-import com.aft.compact.repository.UserRepository;
+import com.entity.Role;
+import com.entity.User;
+import com.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

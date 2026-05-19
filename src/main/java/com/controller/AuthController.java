@@ -1,16 +1,17 @@
 package com.controller;
 
-import com.aft.compact.dto.LoginRequest;
-import com.aft.compact.dto.RegisterRequest;
-import com.aft.compact.entity.Role;
-import com.aft.compact.entity.User;
-import com.aft.compact.repository.UserRepository;
-import com.aft.compact.service.AuthService;
+import com.dto.LoginRequest;
+import com.dto.RegisterRequest;
+import com.entity.Role;
+import com.entity.User;
+import com.repository.UserRepository;
+import com.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ public class AuthController {
 
     private final AuthService authService;
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(
@@ -46,7 +48,7 @@ public class AuthController {
             @AuthenticationPrincipal UserDetails adminDetails) {
 
         String targetEmail = body.get("email");
-        String newRoleStr  = body.get("role");
+        String newRoleStr = body.get("role");
 
         if (targetEmail == null || newRoleStr == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
@@ -77,8 +79,34 @@ public class AuthController {
 
         return ResponseEntity.ok(Map.of(
                 "message", "Rol güncellendi.",
-                "email",   targetEmail,
-                "role",    newRole.name()
+                "email", targetEmail,
+                "role", newRole.name()
         ));
     }
+
+    @PatchMapping("/auth/change-password")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Map<String, String>> changePassword(
+            @RequestBody Map<String, String> body,
+            @AuthenticationPrincipal UserDetails userDetails) {
+
+        String current = body.get("currentPassword");
+        String newPass = body.get("newPassword");
+
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow();
+
+        // Mevcut şifreyi kontrol et
+        if (!passwordEncoder.matches(current, user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", "Mevcut şifre yanlış"));
+        }
+
+        // Yeni şifreyi kaydet
+        user.setPassword(passwordEncoder.encode(newPass));
+        userRepository.save(user);
+
+        return ResponseEntity.ok(Map.of("message", "Şifre güncellendi"));
+    }
+
 }

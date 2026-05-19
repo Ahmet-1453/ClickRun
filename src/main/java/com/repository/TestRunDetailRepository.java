@@ -1,6 +1,6 @@
 package com.repository;
 
-import com.aft.compact.entity.TestRunDetail;
+import com.entity.TestRunDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,11 +1,11 @@
 package com.service;
 
-import com.aft.compact.dto.LoginRequest;
-import com.aft.compact.dto.RegisterRequest;
-import com.aft.compact.entity.Role;
-import com.aft.compact.entity.User;
-import com.aft.compact.repository.UserRepository;
-import com.aft.compact.security.JwtTokenProvider;
+import com.dto.LoginRequest;
+import com.dto.RegisterRequest;
+import com.entity.Role;
+import com.entity.User;
+import com.repository.UserRepository;
+import com.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

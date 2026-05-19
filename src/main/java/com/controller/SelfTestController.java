@@ -1,6 +1,6 @@
 package com.controller;
 
-import com.aft.compact.service.SelfTestService;
+import com.service.SelfTestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

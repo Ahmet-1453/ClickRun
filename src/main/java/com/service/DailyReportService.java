@@ -1,7 +1,7 @@
 package com.service;
 
-import com.aft.compact.entity.TestRun;
-import com.aft.compact.repository.TestRunRepository;
+import com.entity.TestRun;
+import com.repository.TestRunRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

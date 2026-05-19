@@ -1,6 +1,6 @@
 package com.service.runner;
 
-import com.aft.compact.entity.TestStep;
+import com.entity.TestStep;
 import org.openqa.selenium.WebDriver;
 
 // Strategy Pattern sözleşmesi.

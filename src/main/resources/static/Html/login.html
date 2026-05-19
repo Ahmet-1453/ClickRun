@@ -3,121 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Click&Run — Giriş</title>
+    <title>Giriş Yap | Click&Run</title>
     <link rel="stylesheet" href="/Css/login.css">
 </head>
 <body>
 
 <div class="auth-layout">
 
-    <!-- Sol panel: Ürün tanıtımı -->
+    <!-- Sol Panel -->
     <div class="auth-left">
-        <div class="auth-left-inner">
-            <div class="auth-brand">
-                <div class="auth-brand-mark">A</div>
-                <span class="auth-brand-name">Click<strong>&Run</strong></span>
+        <div class="auth-content">
+            <div class="auth-logo">
+                <div class="logo-icon">C&R</div>
+                <div class="logo-text">Click&Run</div>
             </div>
 
-            <div class="auth-tagline">
-                <h1>Kod yazmadan<br>test otomasyonu.</h1>
-                <p>Selenium altyapısı üzerinde çalışan, sürükle-bırak test senaryoları tasarlayın. Kurumsal kalite, sıfır kod.</p>
-            </div>
+            <h1 class="auth-headline">Test Otomasyonu<br>Platformu</h1>
+            <p class="auth-tagline">
+                Selenium tabanlı web test senaryolarınızı kolayca oluşturun,
+                çalıştırın ve yönetin.
+            </p>
 
             <div class="auth-features">
                 <div class="feature-item">
-                    <div class="feature-icon">🎯</div>
-                    <div>
-                        <div class="feature-title">Görsel Senaryo Tasarımı</div>
-                        <div class="feature-desc">N8N benzeri canvas ile test akışlarını görsel olarak oluşturun</div>
-                    </div>
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    <span>Kodsuz senaryo tasarlama</span>
                 </div>
                 <div class="feature-item">
-                    <div class="feature-icon">⚡</div>
-                    <div>
-                        <div class="feature-title">Gerçek Zamanlı Koşum</div>
-                        <div class="feature-desc">Chrome üzerinde canlı test çalıştırın, anında sonuç alın</div>
-                    </div>
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    <span>Canlı test izleme</span>
                 </div>
                 <div class="feature-item">
-                    <div class="feature-icon">📊</div>
-                    <div>
-                        <div class="feature-title">Detaylı Raporlama</div>
-                        <div class="feature-desc">Koşum geçmişi, başarı oranları ve hata ekran görüntüleri</div>
-                    </div>
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    <span>Zamanlanmış testler</span>
                 </div>
-            </div>
-
-            <div class="auth-footer-text">
-                Akgün Yazılım · TÜBİTAK 2209-A
+                <div class="feature-item">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    <span>Detaylı raporlama</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Sağ panel: Form -->
+    <!-- Sağ Panel -->
     <div class="auth-right">
-        <div class="auth-form-wrap">
-            <div class="auth-form-header">
+        <div class="auth-form">
+
+            <div class="form-header">
                 <h2>Tekrar hoş geldiniz</h2>
                 <p>Hesabınıza giriş yapın</p>
             </div>
 
-            <form id="loginForm" autocomplete="on">
+            <form id="login-form" autocomplete="on">
+
+                <!-- Email -->
                 <div class="form-group">
-                    <label class="form-label" for="username">Kurumsal E-posta</label>
+                    <label class="form-label">E-posta</label>
                     <input
-                            class="form-input"
                             type="email"
-                            id="username"
-                            name="email"
-                            placeholder="ornek@akgun.com.tr"
+                            class="form-input"
+                            id="email"
+                            placeholder="ornek@email.com"
                             autocomplete="email"
-                            required
-                    >
+                            required>
                 </div>
 
+                <!-- Şifre -->
                 <div class="form-group">
-                    <label class="form-label" for="password">
-                        Şifre
-                    </label>
-                    <div class="input-password">
+                    <label class="form-label">Şifre</label>
+                    <div class="password-input">
                         <input
-                                class="form-input"
                                 type="password"
+                                class="form-input"
                                 id="password"
-                                name="password"
-                                placeholder="Şifrenizi girin"
+                                placeholder="••••••••"
                                 autocomplete="current-password"
-                                required
-                        >
-                        <button type="button" class="pw-toggle" id="pw-toggle" tabindex="-1">
-                            <svg id="eye-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                required>
+                        <button type="button" class="password-toggle" id="toggle-password">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
                         </button>
                     </div>
                 </div>
 
-                <div id="loginMsg" class="form-msg" style="display:none;"></div>
+                <!-- Error Message -->
+                <div id="error-message" class="error-message" style="display:none;"></div>
 
-                <button type="submit" class="btn-submit" id="loginBtn">
-                    <span id="loginBtnText">Giriş Yap</span>
-                    <span id="loginBtnLoader" class="btn-spinner" style="display:none;"></span>
+                <!-- Submit -->
+                <button type="submit" class="btn-submit" id="btn-submit">
+                    <span id="btn-text">Giriş Yap</span>
+                    <span id="btn-loader" class="btn-loader" style="display:none;"></span>
                 </button>
+
             </form>
 
-            <div class="auth-alt">
-                Hesabınız yok mu?
-                <a href="/Html/register.html">Ücretsiz kayıt olun</a>
+            <!-- Alt Link -->
+            <div class="form-footer">
+                Henüz hesabınız yok mu?
+                <a href="/Html/register.html">Kayıt olun</a>
             </div>
+
         </div>
     </div>
 
 </div>
 
 <script src="/Js/login.js"></script>
-<script>
-    document.getElementById('pw-toggle')?.addEventListener('click', function() {
-        const pw = document.getElementById('password');
-        pw.type = pw.type === 'password' ? 'text' : 'password';
-    });
-</script>
 </body>
 </html>

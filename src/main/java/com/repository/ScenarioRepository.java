@@ -1,6 +1,6 @@
 package com.repository;
 
-import com.aft.compact.entity.Scenario;
+import com.entity.Scenario;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

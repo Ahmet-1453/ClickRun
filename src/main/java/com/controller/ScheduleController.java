@@ -1,10 +1,10 @@
 package com.controller;
 
-import com.aft.compact.entity.ScheduleConfig;
-import com.aft.compact.entity.Scenario;
-import com.aft.compact.repository.ScenarioRepository;
-import com.aft.compact.repository.ScheduleConfigRepository;
-import com.aft.compact.service.ScheduledTestService;
+import com.entity.ScheduleConfig;
+import com.entity.Scenario;
+import com.repository.ScenarioRepository;
+import com.repository.ScheduleConfigRepository;
+import com.service.ScheduledTestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

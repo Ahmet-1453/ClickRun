@@ -1,14 +1,14 @@
 package com.service;
 
-import com.aft.compact.entity.Scenario;
-import com.aft.compact.entity.TestRun;
-import com.aft.compact.entity.TestRunDetail;
-import com.aft.compact.entity.TestStep;
-import com.aft.compact.repository.ScenarioRepository;
-import com.aft.compact.repository.TestRunDetailRepository;
-import com.aft.compact.repository.TestRunRepository;
-import com.aft.compact.service.runner.StepExecutor;
-import com.aft.compact.service.runner.impl.TakeScreenshotExecutor;
+import com.entity.Scenario;
+import com.entity.TestRun;
+import com.entity.TestRunDetail;
+import com.entity.TestStep;
+import com.repository.ScenarioRepository;
+import com.repository.TestRunDetailRepository;
+import com.repository.TestRunRepository;
+import com.service.runner.StepExecutor;
+import com.service.runner.impl.TakeScreenshotExecutor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.OutputType;

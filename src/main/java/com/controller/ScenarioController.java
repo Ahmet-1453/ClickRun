@@ -1,10 +1,10 @@
 package com.controller;
 
-import com.aft.compact.entity.Scenario;
-import com.aft.compact.entity.TestStep;
-import com.aft.compact.repository.ScenarioRepository;
-import com.aft.compact.repository.TestRunRepository;
-import com.aft.compact.service.TestRunnerService;
+import com.entity.Scenario;
+import com.entity.TestStep;
+import com.repository.ScenarioRepository;
+import com.repository.TestRunRepository;
+import com.service.TestRunnerService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;

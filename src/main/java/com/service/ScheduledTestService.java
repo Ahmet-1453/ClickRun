@@ -1,7 +1,7 @@
 package com.service;
 
-import com.aft.compact.entity.ScheduleConfig;
-import com.aft.compact.repository.ScheduleConfigRepository;
+import com.entity.ScheduleConfig;
+import com.repository.ScheduleConfigRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

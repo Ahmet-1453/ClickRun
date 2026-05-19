@@ -1,9 +1,8 @@
 package com.controller;
 
-import com.aft.compact.entity.ChatMessage;
-import com.aft.compact.repository.ChatMessageRepository;
-import com.aft.compact.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import com.entity.ChatMessage;
+import com.repository.ChatMessageRepository;
+import com.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -17,12 +16,19 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequiredArgsConstructor
 public class ChatController {
 
     private final ChatMessageRepository  chatMessageRepository;
     private final UserRepository         userRepository;
     private final SimpMessagingTemplate  messagingTemplate;
+
+    public ChatController(ChatMessageRepository chatMessageRepository,
+                          UserRepository userRepository,
+                          SimpMessagingTemplate messagingTemplate) {
+        this.chatMessageRepository = chatMessageRepository;
+        this.userRepository = userRepository;
+        this.messagingTemplate = messagingTemplate;
+    }
 
     // ── WebSocket: Genel kanal mesajı ───────────────────────
     @MessageMapping("/chat.sendAll")

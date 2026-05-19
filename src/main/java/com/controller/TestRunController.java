@@ -1,9 +1,9 @@
 package com.controller;
 
-import com.aft.compact.entity.TestRun;
-import com.aft.compact.repository.TestRunRepository;
-import com.aft.compact.service.TestRunnerService;
-import com.aft.compact.service.runner.LogStreamHub;
+import com.entity.TestRun;
+import com.repository.TestRunRepository;
+import com.service.TestRunnerService;
+import com.service.runner.LogStreamHub;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/runs")
+@RequestMapping({"/api/runs", "/api/test-runs"})
 @RequiredArgsConstructor
 @Slf4j
 public class TestRunController {
@@ -27,6 +27,11 @@ public class TestRunController {
 
     @GetMapping
     public ResponseEntity<List<TestRun>> getAll() {
+        return ResponseEntity.ok(testRunRepository.findAllByOrderByRunDateDesc());
+    }
+
+    @GetMapping("/history")
+    public ResponseEntity<List<TestRun>> getHistory() {
         return ResponseEntity.ok(testRunRepository.findAllByOrderByRunDateDesc());
     }
 
