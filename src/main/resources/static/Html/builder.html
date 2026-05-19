@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click&Run | Senaryo Tasarım</title>
+    <link rel="stylesheet" href="/Css/aft.css">
+
+    <style>
+        /* ── Builder layout ──────────────────────────── */
+        .builder-wrap {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - var(--navbar-h));
+            overflow: hidden;
+        }
+
+        /* Üst bar */
+        .builder-topbar {
+            height: 52px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 10px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 50;
+        }
+
+        .builder-breadcrumb {
+            font-size: 13px;
+            color: var(--text-3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .builder-breadcrumb a {
+            color: var(--text-3);
+            text-decoration: none;
+        }
+        .builder-breadcrumb a:hover { color: var(--accent); }
+        .builder-breadcrumb .sep { color: var(--border-hover); }
+        .builder-breadcrumb .cur {
+            color: var(--text-1);
+            font-weight: 600;
+        }
+
+        .builder-view-tabs {
+            display: flex;
+            background: var(--surface-2);
+            border-radius: var(--radius-sm);
+            padding: 3px;
+            gap: 2px;
+        }
+        .vtab {
+            padding: 4px 14px;
+            border: none;
+            background: transparent;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--text-2);
+            cursor: pointer;
+            border-radius: calc(var(--radius-sm) - 2px);
+            transition: all var(--transition);
+            font-family: inherit;
+        }
+        .vtab.active {
+            background: var(--surface);
+            color: var(--text-1);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .builder-save-state {
+            font-size: 12px;
+            color: var(--text-3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .save-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+        .save-dot.unsaved {
+            background: var(--warning);
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Ana panel */
+        .builder-body {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* ── Sol: Palet ──────────────────────────────── */
+        .builder-palette {
+            width: 240px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex-shrink: 0;
+            transition: transform 0.2s ease;
+        }
+
+        .builder-palette.hidden {
+            transform: translateX(-100%);
+            position: absolute;
+            z-index: 40;
+        }
+
+        .palette-header {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .palette-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-1);
+        }
+
+        .palette-search {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .palette-search input {
+            width: 100%;
+            padding: 7px 10px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-family: inherit;
+            color: var(--text-1);
+            background: var(--surface-2);
+            outline: none;
+            transition: border-color var(--transition);
+        }
+        .palette-search input:focus {
+            border-color: var(--accent);
+            background: var(--surface);
+        }
+        .palette-search input::placeholder { color: var(--text-3); }
+
+        .palette-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 0;
+        }
+
+        .palette-section-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            color: var(--text-3);
+            padding: 10px 14px 4px;
+            position: sticky;
+            top: 0;
+            background: var(--surface);
+            z-index: 1;
+        }
+
+        .palette-item {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 7px 14px;
+            font-size: 13px;
+            color: var(--text-2);
+            cursor: pointer;
+            border-radius: 0;
+            transition: background var(--transition), color var(--transition);
+            user-select: none;
+        }
+        .palette-item:hover {
+            background: var(--surface-2);
+            color: var(--text-1);
+        }
+        .palette-item-icon {
+            width: 22px; height: 22px;
+            border-radius: 5px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+
+        /* ── Orta: Canvas / Tablo ────────────────────── */
+        .builder-main {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg);
+            position: relative;
+        }
+
+        /* Canvas görünümü */
+        #view-canvas {
+            flex: 1;
+            overflow: auto;
+            padding: 32px;
+            display: flex;
+            align-items: flex-start;
+            gap: 0;
+            position: relative;
+            cursor: grab;
+        }
+
+        #view-canvas:active {
+            cursor: grabbing;
+        }
+
+        .canvas-empty {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-3);
+            gap: 10px;
+            pointer-events: none;
+        }
+        .canvas-empty-icon { font-size: 36px; opacity: 0.4; }
+        .canvas-empty-text { font-size: 13px; }
+
+        .canvas-steps {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            min-height: 140px;
+            transform-origin: 0 0;
+            transition: transform 0.1s ease;
+        }
+
+        /* Zoom kontrolleri */
+        .zoom-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 6px;
+            box-shadow: var(--shadow-lg);
+            z-index: 10;
+        }
+
+        .zoom-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            color: var(--text-2);
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all var(--transition);
+        }
+
+        .zoom-btn:hover {
+            background: var(--surface-2);
+            color: var(--text-1);
+        }
+
+        .zoom-level {
+            font-size: 12px;
+            color: var(--text-3);
+            padding: 0 8px;
+            display: flex;
+            align-items: center;
+            min-width: 50px;
+            justify-content: center;
+        }
+
+        /* Adım kartı */
+        .step-card {
+            width: 180px;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: border-color var(--transition), box-shadow var(--transition), transform 0.15s ease;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .step-card:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow);
+            transform: translateY(-2px);
+        }
+        .step-card.selected {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .step-card-header {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 10px 7px;
+            border-bottom: 1px solid var(--border);
+        }
+        .step-card-num {
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .step-card-type {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-1);
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .step-card-menu {
+            background: none; border: none;
+            color: var(--text-3); cursor: pointer;
+            padding: 2px; border-radius: 3px;
+            font-size: 14px;
+            line-height: 1;
+            transition: color var(--transition);
+        }
+        .step-card-menu:hover { color: var(--text-1); }
+
+        .step-card-body {
+            padding: 8px 10px;
+        }
+        .step-card-desc {
+            font-size: 11.5px;
+            color: var(--text-2);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .step-card-selector {
+            font-family: monospace;
+            font-size: 10.5px;
+            color: var(--text-3);
+            margin-top: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Bağlantı oku */
+        .step-connector {
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+            flex-shrink: 0;
+        }
+        .connector-line {
+            width: 32px;
+            height: 2px;
+            background: var(--border-hover);
+            position: relative;
+        }
+        .connector-line::after {
+            content: '';
+            position: absolute;
+            right: -5px; top: -4px;
+            border: 5px solid transparent;
+            border-left-color: var(--border-hover);
+        }
+
+        /* + Adım ekle butonu */
+        .canvas-add-btn {
+            display: flex;
+            align-items: center;
+            padding-left: 8px;
+            flex-shrink: 0;
+        }
+        .canvas-add-btn button {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            border: 2px dashed var(--border-hover);
+            background: var(--surface);
+            color: var(--text-3);
+            cursor: pointer;
+            font-size: 18px;
+            display: flex; align-items: center; justify-content: center;
+            transition: all var(--transition);
+        }
+        .canvas-add-btn button:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-bg);
+        }
+
+        /* Tablo görünümü */
+        #view-table {
+            flex: 1;
+            overflow: auto;
+            padding: 20px 24px;
+            display: none;
+        }
+
+        .table-step-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+        .table-step-row:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-sm);
+        }
+        .table-step-row.selected {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-light);
+        }
+
+        .drag-handle {
+            color: var(--text-3);
+            cursor: grab;
+            padding: 2px 4px;
+            font-size: 14px;
+        }
+        .drag-handle:active { cursor: grabbing; }
+
+        .table-step-num {
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .table-step-info { flex: 1; min-width: 0; }
+        .table-step-type {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-1);
+        }
+        .table-step-desc {
+            font-size: 12px;
+            color: var(--text-3);
+            margin-top: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .table-step-selector {
+            font-family: monospace;
+            font-size: 12px;
+            color: var(--text-2);
+            background: var(--surface-2);
+            padding: 3px 8px;
+            border-radius: var(--radius-sm);
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ── Sağ: Özellikler ─────────────────────────── */
+        .builder-props {
+            width: 320px;
+            background: var(--surface);
+            border-left: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            flex-shrink: 0;
+            transition: transform 0.2s ease;
+        }
+
+        .builder-props.hidden {
+            transform: translateX(100%);
+            position: absolute;
+            right: 0;
+            height: 100%;
+            z-index: 40;
+        }
+
+        .props-header {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .props-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-1);
+        }
+        .props-step-num {
+            font-size: 11px;
+            color: var(--text-3);
+            font-family: monospace;
+        }
+
+        .props-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .props-empty {
+            text-align: center;
+            padding: 32px 16px;
+            color: var(--text-3);
+        }
+        .props-empty-icon { font-size: 28px; margin-bottom: 8px; }
+        .props-empty-text { font-size: 12.5px; }
+
+        .props-section {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--text-3);
+            margin: 14px 0 8px;
+        }
+        .props-section:first-child { margin-top: 0; }
+
+        .props-field { margin-bottom: 12px; }
+        .props-label {
+            font-size: 11.5px;
+            font-weight: 500;
+            color: var(--text-2);
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .props-input,
+        .props-select,
+        .props-textarea {
+            width: 100%;
+            padding: 7px 10px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 12.5px;
+            color: var(--text-1);
+            background: var(--surface);
+            outline: none;
+            transition: border-color var(--transition);
+        }
+        .props-input:focus,
+        .props-select:focus,
+        .props-textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-light);
+        }
+        .props-textarea { resize: vertical; min-height: 60px; font-size: 12px; }
+        .props-select { appearance: none; cursor: pointer; }
+
+        /* Selector tipi otomatik algılama */
+        .selector-type-auto {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: var(--success);
+            margin-top: 4px;
+        }
+
+        .props-footer {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        /* ── Adım ekleme modal ───────────────────────── */
+        .add-step-modal .modal {
+            max-width: 480px;
+        }
+
+        .selector-hint {
+            font-size: 11px;
+            color: var(--text-3);
+            margin-top: 4px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .hint-chip {
+            background: var(--surface-2);
+            padding: 2px 7px;
+            border-radius: 99px;
+            font-family: monospace;
+        }
+
+        /* Fullscreen mode */
+        .builder-wrap.fullscreen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--bg);
+        }
+
+        .builder-wrap.fullscreen .builder-palette,
+        .builder-wrap.fullscreen .builder-props {
+            transform: translateX(0) !important;
+        }
+
+        /* Keyboard hints */
+        .keyboard-hints {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 10px 14px;
+            font-size: 11px;
+            color: var(--text-3);
+            box-shadow: var(--shadow);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .keyboard-hints.show {
+            opacity: 1;
+        }
+
+        .hint-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .hint-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .hint-key {
+            background: var(--surface-2);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div id="sidebar-container"></div>
+<div id="navbar-container"></div>
+
+<div class="aft-main">
+    <div class="builder-wrap" id="builder-wrap">
+
+        <!-- ══ ÜST BAR ══════════════════════════════════ -->
+        <div class="builder-topbar">
+
+            <!-- Breadcrumb -->
+            <nav class="builder-breadcrumb">
+                <a href="/Html/scenarios.html">Senaryolar</a>
+                <span class="sep">/</span>
+                <span class="cur" id="tb-name">Yükleniyor...</span>
+            </nav>
+
+            <!-- Diyagram / Tablo toggle -->
+            <div class="builder-view-tabs" style="margin-left:12px;">
+                <button class="vtab active" id="vtab-canvas" data-view="canvas">Diyagram</button>
+                <button class="vtab" id="vtab-table" data-view="table">Tablo</button>
+            </div>
+
+            <!-- Kayıt durumu -->
+            <div class="builder-save-state" style="margin-left:8px;">
+                <span class="save-dot" id="save-dot"></span>
+                <span id="save-label">Kaydedildi</span>
+            </div>
+
+            <!-- Sağ butonlar -->
+            <div class="flex gap-8" style="margin-left:auto;">
+                <button class="btn btn-ghost btn-sm" id="btn-toggle-palette" title="Palet (T)">
+                    <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <rect x="3" y="3" width="7" height="7"/>
+                        <rect x="14" y="3" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/>
+                        <rect x="3" y="14" width="7" height="7"/>
+                    </svg>
+                </button>
+                <button class="btn btn-secondary btn-sm" id="btn-add-step">
+                    <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Adım Ekle
+                </button>
+                <button class="btn btn-secondary btn-sm" id="btn-save">
+                    <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                        <polyline points="17 21 17 13 7 13 7 21"/>
+                        <polyline points="7 3 7 8 15 8"/>
+                    </svg>
+                    Kaydet
+                </button>
+                <button class="btn btn-primary btn-sm" id="btn-run">
+                    <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                    Çalıştır
+                </button>
+            </div>
+        </div>
+
+        <!-- ══ ANA PANEL ════════════════════════════════ -->
+        <div class="builder-body">
+
+            <!-- ── SOL: PALET ─────────────────────────── -->
+            <aside class="builder-palette" id="builder-palette">
+                <div class="palette-header">
+                    <span class="palette-title">Araç Paleti</span>
+                    <span style="font-size:11px;color:var(--text-3);">T</span>
+                </div>
+                <div class="palette-search">
+                    <input type="text" id="palette-search" placeholder="Adım ara...">
+                </div>
+                <div class="palette-list" id="palette-list">
+                    <!-- JS ile doldurulacak -->
+                </div>
+            </aside>
+
+            <!-- ── ORTA: CANVAS / TABLO ────────────────── -->
+            <main class="builder-main">
+
+                <!-- Canvas görünümü -->
+                <div id="view-canvas">
+                    <div class="canvas-empty" id="canvas-empty">
+                        <div class="canvas-empty-icon">⬡</div>
+                        <div class="canvas-empty-text">
+                            Sol panelden adım ekleyerek başlayın
+                        </div>
+                    </div>
+                    <div class="canvas-steps" id="canvas-steps"></div>
+                    <div class="canvas-add-btn" id="canvas-add-wrap" style="display:none;">
+                        <button id="canvas-add-btn" title="Adım ekle (A)">+</button>
+                    </div>
+
+                    <!-- Zoom kontrolleri -->
+                    <div class="zoom-controls">
+                        <button class="zoom-btn" id="zoom-out" title="Uzaklaştır (-)">−</button>
+                        <span class="zoom-level" id="zoom-level">100%</span>
+                        <button class="zoom-btn" id="zoom-in" title="Yakınlaştır (+)">+</button>
+                        <button class="zoom-btn" id="zoom-reset" title="Sıfırla (0)">⊙</button>
+                    </div>
+
+                    <!-- Klavye kısayolları -->
+                    <div class="keyboard-hints" id="keyboard-hints">
+                        <div class="hint-row">
+                            <span class="hint-key">F</span>
+                            <span>Tam ekran</span>
+                        </div>
+                        <div class="hint-row">
+                            <span class="hint-key">T</span>
+                            <span>Palet aç/kapat</span>
+                        </div>
+                        <div class="hint-row">
+                            <span class="hint-key">Ctrl+S</span>
+                            <span>Kaydet</span>
+                        </div>
+                        <div class="hint-row">
+                            <span class="hint-key">Del</span>
+                            <span>Seçili adımı sil</span>
+                        </div>
+                        <div class="hint-row">
+                            <span class="hint-key">Scroll</span>
+                            <span>Yakınlaştır/Uzaklaştır</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tablo görünümü -->
+                <div id="view-table">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                        <div style="font-size:13px;font-weight:600;color:var(--text-1);">
+                            Test Adımları
+                            <span id="table-count" style="font-size:12px;font-weight:400;color:var(--text-3);margin-left:6px;">
+            </span>
+                        </div>
+                        <button class="btn btn-secondary btn-sm" id="table-add-btn">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <line x1="12" y1="5" x2="12" y2="19"/>
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                            Adım Ekle
+                        </button>
+                    </div>
+                    <div id="table-steps"></div>
+                    <div id="table-empty" style="display:none;">
+                        <div class="empty-state" style="padding:40px 0;">
+                            <div class="empty-state-icon">📋</div>
+                            <div class="empty-state-title">Henüz adım yok</div>
+                            <div class="empty-state-desc">
+                                Sol panelden adım seçerek başlayın.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+
+            <!-- ── SAĞ: ÖZELLİKLER ────────────────────── -->
+            <aside class="builder-props" id="builder-props">
+                <div class="props-header">
+                    <span class="props-title" id="props-title">Adım Özellikleri</span>
+                    <span class="props-step-num" id="props-step-num"></span>
+                </div>
+
+                <div class="props-body" id="props-body">
+                    <div class="props-empty">
+                        <div class="props-empty-icon">👆</div>
+                        <div class="props-empty-text">
+                            Düzenlemek için bir adıma tıklayın
+                        </div>
+                    </div>
+                </div>
+
+                <div class="props-footer" id="props-footer" style="display:none;">
+                    <button class="btn btn-danger btn-sm flex-1" id="props-delete" style="flex:1;">
+                        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6l-1 14H6L5 6"/>
+                            <path d="M9 6V4h6v2"/>
+                        </svg>
+                        Sil
+                    </button>
+                    <button class="btn btn-primary btn-sm" id="props-apply" style="flex:2;">
+                        Uygula
+                    </button>
+                </div>
+            </aside>
+
+        </div>
+    </div>
+</div>
+
+<!-- ══ TEMPLATES ══════════════════════════════════ -->
+
+<!-- Canvas adım kartı -->
+<template id="tpl-step-card">
+    <div class="step-connector" data-slot="connector" style="display:none;">
+        <div class="connector-line"></div>
+    </div>
+    <div class="step-card" data-slot="card">
+        <div class="step-card-header">
+            <div class="step-card-num" data-slot="num"></div>
+            <div class="step-card-type" data-slot="type"></div>
+            <button class="step-card-menu" data-slot="menu" title="Seçenekler">⋮</button>
+        </div>
+        <div class="step-card-body">
+            <div class="step-card-desc" data-slot="desc"></div>
+            <div class="step-card-selector" data-slot="selector"></div>
+        </div>
+    </div>
+</template>
+
+<!-- Tablo adım satırı -->
+<template id="tpl-table-row">
+    <div class="table-step-row" data-slot="row">
+        <span class="drag-handle" title="Sürükle">⠿</span>
+        <div class="table-step-num" data-slot="num"></div>
+        <div class="table-step-info">
+            <div class="table-step-type" data-slot="type"></div>
+            <div class="table-step-desc" data-slot="desc"></div>
+        </div>
+        <div class="table-step-selector" data-slot="selector"></div>
+        <div class="flex gap-4">
+            <button class="btn btn-ghost btn-sm" data-slot="btn-edit" title="Düzenle" style="padding:4px 7px;">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+            </button>
+            <button class="btn btn-ghost btn-sm" data-slot="btn-del" title="Sil" style="padding:4px 7px;color:var(--danger);">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6l-1 14H6L5 6"/>
+                    <path d="M9 6V4h6v2"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</template>
+
+<!-- Adım ekleme modal -->
+<div class="modal-overlay add-step-modal" id="add-step-modal">
+    <div class="modal" style="max-width:480px;">
+        <div class="modal-header">
+            <span class="modal-title" id="modal-step-title">Adım Ekle</span>
+            <button class="modal-close" id="modal-close">×</button>
+        </div>
+        <div class="modal-body">
+
+            <!-- Adım tipi (readonly, paletten gelir) -->
+            <div class="form-group">
+                <label class="form-label">Adım Tipi</label>
+                <input class="form-input" id="modal-type-display" readonly
+                       style="background:var(--surface-2);color:var(--text-2);cursor:not-allowed;">
+            </div>
+
+            <!-- Açıklama -->
+            <div class="form-group">
+                <label class="form-label">Açıklama (isteğe bağlı)</label>
+                <input class="form-input" type="text" id="modal-desc" placeholder="Bu adım ne yapıyor?">
+            </div>
+
+            <!-- Selector tipi — sadece selector gerektiren adımlarda görünür -->
+            <div id="modal-selector-wrap">
+                <div class="form-group">
+                    <label class="form-label">
+                        Selector Değeri
+                        <span style="color:var(--danger);">*</span>
+                    </label>
+                    <input class="form-input" type="text" id="modal-sel-value" placeholder="Selector girin...">
+                    <div class="selector-hint">
+                        <span>Oto-algılama:</span>
+                        <span class="hint-chip">//</span> XPATH
+                        <span class="hint-chip">#</span> ID
+                        <span class="hint-chip">.</span> CSS
+                    </div>
+                    <div class="selector-type-auto" id="modal-sel-auto" style="display:none;">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span id="modal-sel-auto-text"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Değer — yaz, dropdown seç gibi adımlar için -->
+            <div id="modal-value-wrap" style="display:none;">
+                <div class="form-group">
+                    <label class="form-label" id="modal-value-label">Değer</label>
+                    <input class="form-input" type="text" id="modal-value" placeholder="Değer girin...">
+                </div>
+            </div>
+
+            <!-- URL — sayfa aç için -->
+            <div id="modal-url-wrap" style="display:none;">
+                <div class="form-group">
+                    <label class="form-label">URL <span style="color:var(--danger);">*</span></label>
+                    <input class="form-input" type="url" id="modal-url" placeholder="https://...">
+                </div>
+            </div>
+
+            <div id="modal-hint-box" style="display:none;"></div>
+            <div id="modal-msg" style="display:none;"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="modal-cancel">Vazgeç</button>
+            <button class="btn btn-primary" id="modal-add">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Ekle
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="/Js/app.js"></script>
+<script src="/Js/sidebar.js"></script>
+<script src="/Js/navbar.js"></script>
+<script src="/Js/chat.js"></script>
+<script src="/Js/builder.js"></script>
+</body>
+</html>

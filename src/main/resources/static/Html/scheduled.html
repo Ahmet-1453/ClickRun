@@ -1,10 +1,436 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click&Run | Zamanlanmış Testler</title>
+    <link rel="stylesheet" href="/Css/aft.css">
 </head>
 <body>
 
+<style>
+    /* Stats Grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+    }
+
+    .stat-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px;
+        text-align: center;
+    }
+
+    .stat-card.stat-success {
+        border-color: var(--success);
+        background: linear-gradient(135deg, var(--surface) 0%, rgba(16, 185, 129, 0.05) 100%);
+    }
+
+    .stat-card.stat-muted {
+        opacity: 0.7;
+    }
+
+    .stat-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--text-1);
+        margin-bottom: 4px;
+    }
+
+    .stat-label {
+        font-size: 13px;
+        color: var(--text-3);
+    }
+
+    /* Mode Selector */
+    .mode-selector {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .mode-card {
+        border: 2px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .mode-card:hover {
+        border-color: var(--border-hover);
+        background: var(--surface-2);
+    }
+
+    .mode-card.active {
+        border-color: var(--accent);
+        background: var(--accent-bg);
+    }
+
+    .mode-icon {
+        margin-bottom: 8px;
+        color: var(--text-3);
+    }
+
+    .mode-card.active .mode-icon {
+        color: var(--accent);
+    }
+
+    .mode-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-1);
+        margin-bottom: 2px;
+    }
+
+    .mode-desc {
+        font-size: 12px;
+        color: var(--text-3);
+    }
+
+    /* Frequency Presets */
+    .frequency-presets {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 6px;
+        margin-bottom: 8px;
+    }
+
+    .preset-btn {
+        padding: 8px 4px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        background: var(--surface);
+        color: var(--text-2);
+        font-size: 11px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: inherit;
+    }
+
+    .preset-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        background: var(--accent-bg);
+    }
+
+    .preset-btn.active {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: white;
+    }
+
+    /* Badge */
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .badge.badge-periodic {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .badge.badge-daily {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    /* Toggle */
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 44px;
+        height: 24px;
+    }
+
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        inset: 0;
+        background: var(--border-hover);
+        border-radius: 24px;
+        transition: 0.3s;
+    }
+
+    .toggle-slider::before {
+        content: '';
+        position: absolute;
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background: white;
+        border-radius: 50%;
+        transition: 0.3s;
+    }
+
+    .toggle-switch input:checked + .toggle-slider {
+        background: var(--success);
+    }
+
+    .toggle-switch input:checked + .toggle-slider::before {
+        transform: translateX(20px);
+    }
+</style>
+
+<div id="sidebar-container"></div>
+<div id="navbar-container"></div>
+
+<div class="aft-main">
+    <div class="aft-content">
+
+        <!-- ══ Header ══════════════════════════════════ -->
+        <div class="flex items-center justify-between mb-20">
+            <div>
+                <h1 class="page-title">Gösterge Paneli</h1>
+            </div>
+            <div class="flex gap-8">
+                <button class="btn btn-secondary" id="btn-refresh">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                    </svg>
+                    Yenile
+                </button>
+                <button class="btn btn-primary" id="btn-new-schedule">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Zamanlama Ekle
+                </button>
+            </div>
+        </div>
+
+        <!-- ══ Stats ═══════════════════════════════════ -->
+        <div class="stats-grid mb-24">
+            <div class="stat-card">
+                <div class="stat-value" id="stat-total">0</div>
+                <div class="stat-label">Toplam Zamanlama</div>
+            </div>
+            <div class="stat-card stat-success">
+                <div class="stat-value" id="stat-active">0</div>
+                <div class="stat-label">Aktif Zamanlama</div>
+            </div>
+            <div class="stat-card stat-muted">
+                <div class="stat-value" id="stat-passive">0</div>
+                <div class="stat-label">Pasif Zamanlama</div>
+            </div>
+        </div>
+
+        <!-- ══ Table Header ════════════════════════════ -->
+        <div class="table-container">
+            <div class="table-header">
+                <h2 class="table-title">
+                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" style="margin-right:8px;">
+                        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/>
+                    </svg>
+                    Zamanlanmış Test Senaryoları
+                </h2>
+            </div>
+
+            <!-- ══ Empty State ═══════════════════════════ -->
+            <div id="empty-state" class="empty-state" style="display:none;">
+                <div class="empty-state-icon">⏰</div>
+                <div class="empty-state-title">Henüz zamanlanmış test yok</div>
+                <div class="empty-state-desc">
+                    Senaryolarınızı düzenli aralıklarla veya belirli saatlerde otomatik çalıştırabilirsiniz.
+                </div>
+                <button class="btn btn-primary mt-16" id="btn-new-empty">
+                    Zamanlama Oluştur
+                </button>
+            </div>
+
+            <!-- ══ Table ═════════════════════════════════ -->
+            <table class="aft-table" id="schedule-table" style="display:none;">
+                <thead>
+                <tr>
+                    <th style="width:60px;">#</th>
+                    <th>Senaryo</th>
+                    <th style="width:180px;">Mod</th>
+                    <th style="width:150px;">Sıklık / Saat</th>
+                    <th style="width:180px;">Son Çalışma</th>
+                    <th style="width:180px;">Sonraki Çalışma</th>
+                    <th style="width:100px;">Durum</th>
+                    <th style="width:120px;">İşlem</th>
+                </tr>
+                </thead>
+                <tbody id="schedule-tbody"></tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<!-- ══ TEMPLATES ══════════════════════════════════ -->
+
+<!-- Table Row -->
+<template id="tpl-schedule-row">
+    <tr data-slot="row">
+        <td data-slot="id" class="text-center"></td>
+        <td data-slot="name" class="font-semibold"></td>
+        <td>
+            <span class="badge" data-slot="mode"></span>
+        </td>
+        <td data-slot="frequency"></td>
+        <td data-slot="last"></td>
+        <td data-slot="next" class="text-primary font-semibold"></td>
+        <td>
+            <label class="toggle-switch">
+                <input type="checkbox" data-slot="toggle">
+                <span class="toggle-slider"></span>
+            </label>
+        </td>
+        <td>
+            <div class="flex gap-4 justify-center">
+                <button class="btn btn-ghost btn-sm" data-slot="btn-edit" title="Düzenle">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                    </svg>
+                </button>
+                <button class="btn btn-ghost btn-sm" data-slot="btn-delete" title="Sil" style="color:var(--danger);">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <polyline points="3 6 5 6 21 6"/>
+                        <path d="M19 6l-1 14H6L5 6"/>
+                        <path d="M9 6V4h6v2"/>
+                    </svg>
+                </button>
+            </div>
+        </td>
+    </tr>
+</template>
+
+<!-- ══ MODAL: Create/Edit ═════════════════════════ -->
+<div class="modal-overlay" id="schedule-modal">
+    <div class="modal" style="max-width:520px;">
+        <div class="modal-header">
+            <div class="flex items-center gap-8">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/>
+                </svg>
+                <span class="modal-title" id="modal-title">Yeni Zamanlama</span>
+            </div>
+            <button class="modal-close" id="modal-close">×</button>
+        </div>
+        <div class="modal-body">
+
+            <!-- Senaryo Seçimi -->
+            <div class="form-group">
+                <label class="form-label">Senaryo <span class="required">*</span></label>
+                <select class="form-select" id="modal-scenario" required>
+                    <option value="">Senaryo seçin...</option>
+                </select>
+            </div>
+
+            <!-- Zamanlama Modu -->
+            <div class="form-group">
+                <label class="form-label">Zamanlama Modu</label>
+                <div class="mode-selector">
+                    <div class="mode-card" id="mode-periodic" data-mode="INTERVAL">
+                        <div class="mode-icon">
+                            <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                                <circle cx="12" cy="12" r="5"/>
+                            </svg>
+                        </div>
+                        <div class="mode-title">Periyodik</div>
+                        <div class="mode-desc">Her N dakikada bir</div>
+                    </div>
+                    <div class="mode-card" id="mode-daily" data-mode="DAILY">
+                        <div class="mode-icon">
+                            <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V19.5h-2v2.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z"/>
+                            </svg>
+                        </div>
+                        <div class="mode-title">Günlük Sabit</div>
+                        <div class="mode-desc">Her gün belirli saatte</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Periyodik Config -->
+            <div id="periodic-config" class="form-group">
+                <label class="form-label">Çalışma Sıklığı (Dakika)</label>
+                <div class="frequency-presets">
+                    <button type="button" class="preset-btn" data-value="30">30 dk</button>
+                    <button type="button" class="preset-btn" data-value="60">1 saat</button>
+                    <button type="button" class="preset-btn" data-value="180">3 saat</button>
+                    <button type="button" class="preset-btn" data-value="360">6 saat</button>
+                    <button type="button" class="preset-btn" data-value="720">12 saat</button>
+                    <button type="button" class="preset-btn" data-value="1440">1 gün</button>
+                </div>
+                <div class="flex items-center gap-8 mt-12">
+                    <input type="number" class="form-input" id="modal-interval"
+                           placeholder="360" min="1" value="360" style="flex:1;">
+                    <span style="font-size:13px;color:var(--text-3);white-space:nowrap;">
+            dakikada bir çalıştır
+          </span>
+                </div>
+                <div class="form-hint" id="interval-hint">
+                    🚀 Her 6.0 saatte bir çalışır
+                </div>
+            </div>
+
+            <!-- Günlük Config -->
+            <div id="daily-config" class="form-group" style="display:none;">
+                <label class="form-label">Her gün saat kaçta?</label>
+                <input type="time" class="form-input" id="modal-time" value="03:00"
+                       style="font-size:18px;text-align:center;padding:12px;">
+                <div class="form-hint">
+                    Testin her gün hangi saatte çalışacağını belirtin
+                </div>
+            </div>
+
+            <!-- Pasif Toggle -->
+            <div class="form-group">
+                <div class="flex items-center justify-between" style="padding:12px 0;">
+                    <label class="form-label" style="margin:0;">Pasif</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="modal-passive">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <div id="modal-error" class="form-error" style="display:none;"></div>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="modal-cancel">İptal</button>
+            <button class="btn btn-primary" id="modal-save">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                    <polyline points="17 21 17 13 7 13 7 21"/>
+                    <polyline points="7 3 7 8 15 8"/>
+                </svg>
+                Kaydet
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="/Js/app.js"></script>
+<script src="/Js/sidebar.js"></script>
+<script src="/Js/navbar.js"></script>
+<script src="/Js/chat.js"></script>
+<script src="/Js/scheduled.js"></script>
 </body>
 </html>
